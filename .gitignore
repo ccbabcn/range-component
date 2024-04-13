@@ -11,3 +11,6 @@
 
 # typescript
 next-env.d.ts
+
+# testing
+/coverage
