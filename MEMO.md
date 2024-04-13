@@ -7,6 +7,7 @@
 - [x] Integrated Tailwind CSS (CSS modules it's also an option but for simplicity I choose Tailwind)
 - [x] Defined folder structure for App routing (Introduced in Next 13)
 - [x] Add prettier plugins
+- [x] Add husky hooks and main branch protection
 
 ## Testing
 
@@ -15,5 +16,4 @@
 
 ## Next
 
-- [] Add husky hooks and main branch protection
 - [] Define component structure and logic

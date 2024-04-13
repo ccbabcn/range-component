@@ -1,0 +1,53 @@
+#!/bin/sh
+
+. "$(dirname "$0")/_/husky.sh"
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+no_color='\033[0m'
+
+echo "${yellow}Executing pre-commit hook...${no_color}"
+
+FILES_PATTERN='\.(js|ts)(\..+)?$'
+FORBIDDEN='console\.[clear|dir|log]'
+
+# Check for console references in your code
+if git diff --cached --name-only | \
+    grep -E $FILES_PATTERN | \
+    xargs grep --with-filename -n $FORBIDDEN | \
+    grep -v '//';
+then
+    echo "\n${red}COMMIT REJECTED! 📟 Found forbidden console references. Please remove them before committing.${no_color}"
+    exit 1
+fi
+
+echo "${green}no forbidden console references...${no_color}"
+
+FORBIDDEN='debugger'
+
+# Check for debugger references in your code
+if git diff --cached --name-only | \
+    grep -E $FILES_PATTERN | \
+    xargs grep --with-filename -n $FORBIDDEN | \
+    grep -v '//';
+then
+    echo "\n${red}COMMIT REJECTED! 🐛 Found debugger references. Please remove them before committing.${no_color}"
+    exit 1
+fi
+
+echo "${green}no debugger references...${no_color}"
+
+# Check if attempting to commit to the 'main' branch
+if [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ]; then
+    echo "\n${yellow}COMMIT REJECTED! 🪵 Avoid direct commits to the main branch.${no_color}"
+    exit 1
+fi
+echo "${green}correct branch naming...${no_color}"
+#execute lint-staged script
+exec >/dev/tty 2>&1
+npx lint-staged
+
+
+echo "${green}Git pre-commit hook was successful!${no_color}\n"
+exit 0
