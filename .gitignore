@@ -4,6 +4,7 @@
 # misc
 .DS_Store
 .vscode
+.swc
 
 # next.js
 /.next/
