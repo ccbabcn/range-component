@@ -10,7 +10,9 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "prepare": "husky"
+    "prepare": "husky",
+    "ci": "next build && eslint .",
+    "ci:test": "jest --ci"
   },
   "keywords": [],
   "author": "Cristian Bermudez Agudelo <@ccbabcn> (https://github.com/ccbabcn)",
