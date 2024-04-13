@@ -1,0 +1,13 @@
+# node_modules
+/node_modules
+
+# misc
+.DS_Store
+.vscode
+
+# next.js
+/.next/
+/out/
+
+# typescript
+next-env.d.ts
