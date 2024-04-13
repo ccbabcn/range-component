@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cristian Bermudez Agudelo <@ccbabcn> (https://github.com/ccbabcn)",
   "license": "ISC",
   "description": "This project contains a custom range component developed using Next.js and TypeScript.",
   "dependencies": {
