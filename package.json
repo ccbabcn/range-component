@@ -12,7 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This project contains a custom range component developed using Next.js and TypeScript.",
   "dependencies": {
     "next": "^14.2.1",
     "react": "^18.2.0",
