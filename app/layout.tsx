@@ -7,7 +7,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="d-flex h-screen flex-col items-center justify-center">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

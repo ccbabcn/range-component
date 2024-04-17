@@ -8,7 +8,7 @@ describe('Page', () => {
 
     const heading = screen.getByRole('heading', {
       level: 1,
-      name: 'Hello, Next.js!',
+      name: 'Range component',
     });
 
     expect(heading).toBeInTheDocument();
