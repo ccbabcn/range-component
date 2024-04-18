@@ -1,5 +1,5 @@
-import { useMoveProps } from '@/app/types';
-import { getBoundedValue } from '@/app/utils';
+import { useMoveProps } from '@/types';
+import { getBoundedValue } from '@/utils/utils';
 import { useEffect } from 'react';
 
 const useTouchMove = ({

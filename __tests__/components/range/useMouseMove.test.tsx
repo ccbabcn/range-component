@@ -1,5 +1,5 @@
 import { render, act } from '@testing-library/react';
-import useMouseMove from '@/app/components/range/knob/useMouseMove';
+import useMouseMove from '@/components/range/knob/useMouseMove';
 
 const TestComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
   useMouseMove({

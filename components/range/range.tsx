@@ -1,6 +1,6 @@
 'use client';
 
-import { KnobOnChageProperties } from '@/app/types';
+import { KnobOnChageProperties } from '@/types';
 import { useEffect, useRef, useState } from 'react';
 import Knob from './knob/knob';
 
