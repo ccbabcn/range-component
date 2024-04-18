@@ -1,7 +1,13 @@
+import { PriceLimit } from './common';
+
 export type KnobOnChageProperties = {
   left: number;
   rigth: number;
   percent: number;
+};
+
+export type SliderProps = {
+  priceLimit: PriceLimit;
 };
 
 export type KnobProps = {
@@ -21,3 +27,8 @@ export type useMoveProps = {
   updateKnobPosition: (newPosition: number) => void;
   stopDragging: () => void;
 };
+
+export type KnobOnChangeSetter = [
+  KnobOnChageProperties,
+  Dispatch<KnobOnChageProperties>,
+];
