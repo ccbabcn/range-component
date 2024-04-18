@@ -104,7 +104,7 @@ const Knob = ({
   return (
     <div
       ref={knobRef}
-      aria-label="range knob"
+      aria-label="range"
       aria-valuemin={0}
       aria-valuemax={600}
       aria-valuenow={0}

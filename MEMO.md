@@ -16,4 +16,7 @@
 
 ## Next
 
-- [] Define component structure and logic
+- [x] Define component structure and logic
+      -- [x] Knob - custom handler
+      -- [x] Slider - knobs container and visual guide
+      -- [] Num inputs - display limits
