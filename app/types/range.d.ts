@@ -7,7 +7,7 @@ export type KnobOnChageProperties = {
 export type KnobProps = {
   maxLimit: number;
   minLimit: number;
-  initialValue: number;
+  percentValue: number;
   isLeft: boolean;
   onChange: (properties: KnobOnChageProperties) => void;
 };
