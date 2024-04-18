@@ -1,13 +1,19 @@
+import { PriceLimit } from './common';
+
 export type KnobOnChageProperties = {
   left: number;
   rigth: number;
   percent: number;
 };
 
+export type SliderProps = {
+  priceLimit: PriceLimit;
+};
+
 export type KnobProps = {
   maxLimit: number;
   minLimit: number;
-  initialValue: number;
+  percentValue: number;
   isLeft: boolean;
   onChange: (properties: KnobOnChageProperties) => void;
 };
@@ -21,3 +27,8 @@ export type useMoveProps = {
   updateKnobPosition: (newPosition: number) => void;
   stopDragging: () => void;
 };
+
+export type KnobOnChangeSetter = [
+  KnobOnChageProperties,
+  Dispatch<KnobOnChageProperties>,
+];

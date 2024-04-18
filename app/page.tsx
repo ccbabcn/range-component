@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Range from '@/app/components/range/range';
+import Range from '@/components/range/range';
 
 export const metadata: Metadata = {
   title: 'Range Component',

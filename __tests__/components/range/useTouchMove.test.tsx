@@ -1,5 +1,5 @@
 import { render, act, fireEvent } from '@testing-library/react';
-import useTouchMove from '@/app/components/range/knob/useTouchMove';
+import useTouchMove from '@/components/range/knob/useTouchMove';
 
 const TestComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
   useTouchMove({

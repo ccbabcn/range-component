@@ -1,4 +1,4 @@
-import { getBoundedValue } from '@/app/utils';
+import { getBoundedValue } from '@/utils/utils';
 
 describe('GIVEN getBoundedValue function', () => {
   describe('WHEN the new value is within the min and max limits', () => {
