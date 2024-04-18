@@ -113,7 +113,7 @@ const Knob = ({
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       className="knob"
-      data-testid="knob"
+      data-testid={isLeft ? 'left-knob' : 'right-knob'}
       style={{
         position: 'absolute',
         left: knobSize / 2,

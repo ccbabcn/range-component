@@ -18,7 +18,7 @@ describe('GIVEN a Knob Component', () => {
         />,
       );
 
-      const knobElement = getByTestId('knob');
+      const knobElement = getByTestId('left-knob');
       expect(knobElement).toBeInTheDocument();
     });
     it('THEN it should contain all the accessible elements', () => {
@@ -33,11 +33,11 @@ describe('GIVEN a Knob Component', () => {
         />,
       );
 
-      const knobElement = getByTestId('knob');
-      const knobLabel = getByLabelText('range'); // Assuming ARIA label value
+      const knobElement = getByTestId('left-knob');
+      const knobLabel = getByLabelText('range');
       expect(knobElement).toBeInTheDocument();
       expect(knobLabel).toBeInTheDocument();
-      expect(knobElement.style.left).toBe('7.5px'); // Assuming getByLabelText
+      expect(knobElement.style.left).toBe('7.5px');
     });
   });
   describe('WHEN it is rendered an the user interacts with the mouse', () => {
@@ -48,12 +48,12 @@ describe('GIVEN a Knob Component', () => {
           maxLimit={100}
           minLimit={0}
           percentValue={0}
-          isLeft={true}
+          isLeft={false}
           onChange={mockOnChange}
         />,
       );
 
-      const knobElement = getByTestId('knob');
+      const knobElement = getByTestId('right-knob');
       fireEvent.mouseDown(knobElement);
       fireEvent.mouseMove(knobElement);
 
@@ -75,7 +75,7 @@ describe('GIVEN a Knob Component', () => {
           />
         </div>,
       );
-      const knobElement = getByTestId('knob');
+      const knobElement = getByTestId('right-knob');
       fireEvent.touchMove(knobElement);
 
       expect(mockOnChange).toHaveBeenCalled();

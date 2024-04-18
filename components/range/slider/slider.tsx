@@ -4,6 +4,11 @@ import { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import Knob from '@/components/range/knob/knob';
 import { getObjectLimitsWithinParent } from '@/utils/utils';
 
+/**
+ * Renders a slider component with two knobs for selecting a range of values.
+ *
+ * @return {JSX.Element} The rendered slider component.
+ */
 const Slider = (): JSX.Element => {
   const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
   const knobSize = 15;
@@ -62,7 +67,11 @@ const Slider = (): JSX.Element => {
               isLeft={false}
               percentValue={100}
             />
-            <div className="slider h-1 w-full rounded-full bg-black" />
+            <div
+              data-testid="progress-bar"
+              role="progressbar"
+              className="slider h-1 w-full rounded-full bg-black"
+            />
           </div>
         )}
       </div>
