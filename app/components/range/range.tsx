@@ -1,30 +1,35 @@
 'use client';
 
+import { KnobOnChageProperties } from '@/app/types';
 import { useEffect, useRef, useState } from 'react';
 import Knob from './knob/knob';
-import { KnobOnChageProperties } from '@/app/types';
 
 const Range = (): JSX.Element => {
   const [limits, setLimits] = useState({
-    minSliderValue: 0,
-    maxSliderValue: 0,
-    offset: 0,
+    min: 0,
+    max: 0,
   });
+  const prices = [50, 250];
+  const maxPrice = Math.max(...prices);
+  const minPrice = Math.min(...prices);
   const knobSize = 15;
   const sliderRef = useRef(null);
+
+  const updateLimits = () => {
+    const parentOffset = sliderRef.current.offsetLeft;
+    const parentWidth = sliderRef.current.clientWidth;
+    const minLimit = parentOffset + knobSize / 2;
+    const maxLimit = parentOffset + parentWidth - knobSize / 2;
+    setLimits({
+      min: minLimit,
+      max: maxLimit,
+    });
+  };
   useEffect(() => {
     if (sliderRef.current) {
-      const parentOffset = sliderRef.current.offsetLeft;
-      const parentWidth = sliderRef.current.clientWidth;
-      const minLimit = parentOffset + knobSize / 2;
-      const maxLimit = parentOffset + parentWidth - knobSize / 2;
-      setLimits({
-        minSliderValue: minLimit,
-        maxSliderValue: maxLimit,
-        offset: parentOffset,
-      });
+      updateLimits();
     }
-  }, []);
+  }, [sliderRef?.current?.offsetLeft]);
 
   const [leftKnobProperties, setLeftKnobProperties] = useState({
     left: 0,
@@ -44,38 +49,92 @@ const Range = (): JSX.Element => {
   const handleOnRightKnobChange = (properties: KnobOnChageProperties) => {
     setRightKnobProperties(properties);
   };
+  const handleLeftInputChange = () => {};
+
+  const handleRightInputChange = () => {};
+
+  const fromPercentageToValue = () => {
+    const leftPercentage = leftKnobProperties.percent;
+    const rightPercentage = rightKnobProperties.percent;
+    const range = maxPrice - minPrice;
+    let leftValue = Math.round((leftPercentage * range) / 100 + minPrice);
+    let rightValue = Math.round((rightPercentage * range) / 100 + minPrice);
+
+    const isSameValue = leftValue === rightValue;
+    const isZeroPercentage = leftPercentage === 0 && rightPercentage === 0;
+    const isLeftPercentageBigger = leftPercentage > rightPercentage;
+
+    if (isSameValue && isZeroPercentage) {
+      leftValue = minPrice;
+      rightValue = minPrice + 1;
+    }
+    if (isSameValue && isLeftPercentageBigger) {
+      rightValue += 1;
+    }
+    if (isSameValue && !isLeftPercentageBigger) {
+      leftValue -= 1;
+    }
+
+    leftValue = Math.max(minPrice, leftValue);
+    rightValue = Math.min(maxPrice, rightValue);
+
+    return { leftValue, rightValue };
+  };
 
   return (
-    <div className="conatiner relative h-3 w-full items-center justify-center stroke-black">
-      <div className="relative flex w-full flex-row items-center">
+    <div className="conatiner flex flex-row items-center justify-center gap-x-2 stroke-black">
+      <input
+        className="text-center"
+        type="number"
+        id="left-input"
+        name="left-input"
+        step={1}
+        min={minPrice}
+        max={maxPrice - 1}
+        placeholder={String(minPrice)}
+        value={fromPercentageToValue().leftValue}
+        onChange={handleLeftInputChange}
+      />
+      <div className="element relative flex w-full flex-col items-center justify-center">
         <div
           ref={sliderRef}
           className="slider relative box-border flex h-4 w-full flex-col justify-center"
         >
           {sliderRef.current && (
-            <>
+            <div>
               <Knob
-                minLimit={limits.minSliderValue}
+                minLimit={limits.min}
                 maxLimit={Math.max(
                   rightKnobProperties.left - knobSize,
                   knobSize,
                 )}
                 onChange={handleOnLeftKnobChange}
                 isLeft={true}
-                initialValue={0}
+                percentValue={0}
               />
               <Knob
                 minLimit={leftKnobProperties.rigth}
-                maxLimit={limits.maxSliderValue}
+                maxLimit={limits.max}
                 onChange={handleOnRightKnobChange}
                 isLeft={false}
-                initialValue={100}
+                percentValue={100}
               />
               <div className="slider h-1 w-full rounded-full bg-black" />
-            </>
+            </div>
           )}
         </div>
       </div>
+      <input
+        className="text-center"
+        type="number"
+        id="right-input"
+        name="right-input"
+        min={minPrice + 1}
+        max={maxPrice}
+        placeholder={String(maxPrice)}
+        value={fromPercentageToValue().rightValue}
+        onChange={handleRightInputChange}
+      />
     </div>
   );
 };

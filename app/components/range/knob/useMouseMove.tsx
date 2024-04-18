@@ -1,6 +1,6 @@
 import { useMoveProps } from '@/app/types';
-import { getBoundedValue } from '@/app/utils';
 import { useEffect } from 'react';
+import { getBoundedValue } from '@/app/utils';
 
 const useMouseMove = ({
   isDragging,
