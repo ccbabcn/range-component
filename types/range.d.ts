@@ -35,3 +35,10 @@ export type KnobOnChangeSetter = [
   KnobOnChageProperties,
   Dispatch<KnobOnChageProperties>,
 ];
+
+export type ValueToPercentageConfig = {
+  leftPercentage: number;
+  rightPercentage: number;
+  minPrice: number;
+  maxPrice: number;
+};

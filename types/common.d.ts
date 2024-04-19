@@ -22,3 +22,10 @@ export type PriceLimit = Price<Limits>;
 
 export type PriceList = number[];
 export type PriceListPromise = Promise<PriceList>;
+
+export type LeftAndRight<T> = {
+  leftValue: T;
+  rightValue: T;
+};
+
+export type LeftAndRightValues = LeftAndRight<number>;

@@ -1,4 +1,5 @@
-import { Limits } from '@/types/common';
+import { LeftAndRightValues, Limits } from '@/types/common';
+import { ValueToPercentageConfig } from '@/types/range';
 import { MutableRefObject } from 'react';
 
 export const getBoundedValue = (
@@ -22,31 +23,34 @@ export const getObjectLimitsWithinParent = (
     max: maxLimit,
   };
 };
-// FOR INPUT VALUE
-// const fromPercentageToValue = () => {
-//   const leftPercentage = leftKnobProperties.percent;
-//   const rightPercentage = rightKnobProperties.percent;
-//   const range = maxPrice - minPrice;
-//   let leftValue = Math.round((leftPercentage * range) / 100 + minPrice);
-//   let rightValue = Math.round((rightPercentage * range) / 100 + minPrice);
 
-//   const isSameValue = leftValue === rightValue;
-//   const isZeroPercentage = leftPercentage === 0 && rightPercentage === 0;
-//   const isLeftPercentageBigger = leftPercentage > rightPercentage;
+export const getValueFromPercentage = ({
+  leftPercentage,
+  rightPercentage,
+  minPrice,
+  maxPrice,
+}: ValueToPercentageConfig): LeftAndRightValues => {
+  const priceRange = maxPrice - minPrice;
+  let leftValue = Math.round((leftPercentage * priceRange) / 100 + minPrice);
+  let rightValue = Math.round((rightPercentage * priceRange) / 100 + minPrice);
 
-//   if (isSameValue && isZeroPercentage) {
-//     leftValue = minPrice;
-//     rightValue = minPrice + 1;
-//   }
-//   if (isSameValue && isLeftPercentageBigger) {
-//     rightValue += 1;
-//   }
-//   if (isSameValue && !isLeftPercentageBigger) {
-//     leftValue -= 1;
-//   }
+  const isSameValue = leftValue === rightValue;
+  const isZeroPercentage = leftPercentage === 0 && rightPercentage === 0;
+  const isLeftPercentageBigger = leftPercentage > rightPercentage;
 
-//   leftValue = Math.max(minPrice, leftValue);
-//   rightValue = Math.min(maxPrice, rightValue);
+  if (isSameValue && isZeroPercentage) {
+    leftValue = minPrice;
+    rightValue = minPrice + 1;
+  }
+  if (isSameValue && isLeftPercentageBigger) {
+    rightValue += 1;
+  }
+  if (isSameValue && !isLeftPercentageBigger) {
+    leftValue -= 1;
+  }
 
-//   return { leftValue, rightValue };
-// };
+  leftValue = Math.max(minPrice, leftValue);
+  rightValue = Math.min(maxPrice, rightValue);
+
+  return { leftValue, rightValue };
+};
