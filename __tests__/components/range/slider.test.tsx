@@ -4,7 +4,7 @@ import { render, fireEvent } from '@testing-library/react';
 describe('GIVEN a Slider component ', () => {
   describe('WHEN instantiated', () => {
     it('THEN it should render two knobs and a progress bar', () => {
-      const { getByTestId } = render(<Slider />);
+      const { getByTestId } = render(<Slider onChange={() => {}} />);
 
       const leftKnob = getByTestId('left-knob');
       const rigthKnob = getByTestId('right-knob');
@@ -18,13 +18,15 @@ describe('GIVEN a Slider component ', () => {
 
   describe('WHEN it is rendered and the user interacts with a knob', () => {
     it('THEN should update knob position accordingly', () => {
-      const { getByTestId } = render(<Slider />);
+      const mockOnChange = jest.fn();
+      const { getByTestId } = render(<Slider onChange={mockOnChange} />);
       const leftKnob = getByTestId('left-knob');
 
       fireEvent.mouseDown(leftKnob);
       fireEvent.mouseMove(document, { clientX: 15 });
 
       expect(leftKnob.style.left).toBe('15px');
+      expect(mockOnChange).toHaveBeenCalled();
     });
   });
 });
