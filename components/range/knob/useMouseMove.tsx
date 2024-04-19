@@ -1,4 +1,4 @@
-import { useMoveProps } from '@/types';
+import { useMoveProps } from '@/types/range';
 import { useEffect } from 'react';
 import { getBoundedValue } from '@/utils/utils';
 

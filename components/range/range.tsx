@@ -2,9 +2,9 @@
 
 import { PriceLimit } from '@/types/common';
 import Slider from '@/components/range/slider/slider';
+import { RangeProps } from '@/types/range';
 
-const Range = (): JSX.Element => {
-  const prices = [50, 250];
+const Range = ({ prices }: RangeProps): JSX.Element => {
   const priceLimit: PriceLimit = {
     minPrice: Math.min(...prices),
     maxPrice: Math.max(...prices),

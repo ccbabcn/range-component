@@ -19,3 +19,6 @@ type Price<T extends K> = {
 };
 
 export type PriceLimit = Price<Limits>;
+
+export type PriceList = number[];
+export type PriceListPromise = Promise<PriceList>;

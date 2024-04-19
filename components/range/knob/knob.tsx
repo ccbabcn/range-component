@@ -1,4 +1,4 @@
-import { KnobProps } from '@/types';
+import { KnobProps } from '@/types/range';
 import React, { useRef, useState, useEffect } from 'react';
 import useMouseMove from './useMouseMove';
 import useTouchMove from './useTouchMove';
