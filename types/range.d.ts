@@ -10,6 +10,9 @@ export type SliderProps = {
   priceLimit: PriceLimit;
 };
 
+export type RangeProps = {
+  prices: PriceList;
+};
 export type KnobProps = {
   maxLimit: number;
   minLimit: number;
