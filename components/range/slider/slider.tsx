@@ -9,7 +9,7 @@ import { getObjectLimitsWithinParent } from '@/utils/utils';
  *
  * @return {JSX.Element} The rendered slider component.
  */
-const Slider = (): JSX.Element => {
+const Slider = ({ onChange }): JSX.Element => {
   const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
   const knobSize = 15;
 
@@ -44,6 +44,13 @@ const Slider = (): JSX.Element => {
   const handleOnRightKnobChange = (properties: KnobOnChageProperties) => {
     setRightKnobProperties(properties);
   };
+
+  useEffect(() => {
+    onChange({
+      leftPercentage: leftKnobProperties.percent,
+      rightPercentage: rightKnobProperties.percent,
+    });
+  }, [leftKnobProperties.percent, rightKnobProperties.percent]);
 
   return (
     <div className="element relative flex w-full flex-col items-center justify-center">
