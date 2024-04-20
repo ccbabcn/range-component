@@ -5,6 +5,7 @@ import {
   GetBoundedValueConfig,
   PositionFromPercentageConfig,
   PercentageFromPositionConfig,
+  ValueFromRangeConfig,
 } from '@/types/common';
 import { MutableRefObject } from 'react';
 
@@ -28,40 +29,59 @@ export const getObjectLimitsWithinParent = (
     max: maxLimit,
   };
 };
-export const getPercentageFromPrice = ({
+
+export const getValueInRangeFromPercentage = ({
+  current,
+  min,
+  max,
+}: ValueFromRangeConfig) => {
+  return Math.round((current / 100) * (max - min) + min);
+};
+export const getPriceInRangeFromPercentage = ({
+  currentPercentage,
+  maxPrice,
+  minPrice,
+}: PriceFromPercentageConfig) =>
+  getValueInRangeFromPercentage({
+    current: currentPercentage,
+    min: minPrice,
+    max: maxPrice,
+  });
+export const getPositionInRangeFromPercentage = ({
+  currentPercentage,
+  minPosition,
+  maxPosition,
+}: PositionFromPercentageConfig) =>
+  getValueInRangeFromPercentage({
+    current: currentPercentage,
+    min: minPosition,
+    max: maxPosition,
+  });
+export const getPercentageFromValueRange = ({
+  current,
+  min,
+  max,
+}: ValueFromRangeConfig) => {
+  const range = max - min;
+  return Math.round(((current - min) * 100) / range);
+};
+export const getPercentageFromPriceRange = ({
   currentPrice,
   minPrice,
   maxPrice,
-}: PercentageFromPriceConfig) => {
-  const priceRange = maxPrice - minPrice;
-  return Math.round(((currentPrice - minPrice) * 100) / priceRange);
-};
-
-export const getPriceFromPercentage = ({
-  currentPercentage,
-  maxPrice,
-  minPrice,
-}: PriceFromPercentageConfig) => {
-  return Math.round(
-    (currentPercentage / 100) * (maxPrice - minPrice) + minPrice,
-  );
-};
-
-export const getPositionFromPercentage = ({
-  currentPercentage,
-  minPosition,
-  maxPosition,
-}: PositionFromPercentageConfig) => {
-  return Math.round(
-    (currentPercentage / 100) * (maxPosition - minPosition) + minPosition,
-  );
-};
-
-export const getPercentageFromPosition = ({
+}: PercentageFromPriceConfig) =>
+  getPercentageFromValueRange({
+    current: currentPrice,
+    min: minPrice,
+    max: maxPrice,
+  });
+export const getPercentageFromPositionRange = ({
   currentPosition,
   minPosition,
   maxPosition,
-}: PercentageFromPositionConfig) => {
-  const positionRange = maxPosition - minPosition;
-  return Math.round(((currentPosition - minPosition) * 100) / positionRange);
-};
+}: PercentageFromPositionConfig) =>
+  getPercentageFromValueRange({
+    current: currentPosition,
+    min: minPosition,
+    max: maxPosition,
+  });
