@@ -1,9 +1,7 @@
-import { PriceLimit } from './common';
-
 export type KnobOnChageProperties = {
   left: number;
   rigth: number;
-  percent: number;
+  percentage: number;
 };
 
 export type SliderProps = {
@@ -35,10 +33,3 @@ export type KnobOnChangeSetter = [
   KnobOnChageProperties,
   Dispatch<KnobOnChageProperties>,
 ];
-
-export type ValueToPercentageConfig = {
-  leftPercentage: number;
-  rightPercentage: number;
-  minPrice: number;
-  maxPrice: number;
-};

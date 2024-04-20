@@ -1,15 +1,18 @@
-import { LeftAndRightValues, Limits } from '@/types/common';
-import { ValueToPercentageConfig } from '@/types/range';
+import {
+  Limits,
+  PriceFromPercentageConfig,
+  PercentageFromPriceConfig,
+  GetBoundedValueConfig,
+} from '@/types/common';
 import { MutableRefObject } from 'react';
 
-export const getBoundedValue = (
-  newValue: number,
-  minLimit = 0,
-  maxLimit = 0,
-) => {
-  return Math.min(Math.max(minLimit, newValue), maxLimit);
+export const getBoundedValue = ({
+  value,
+  minLimit,
+  maxLimit,
+}: GetBoundedValueConfig) => {
+  return Math.min(Math.max(minLimit, value), maxLimit);
 };
-
 export const getObjectLimitsWithinParent = (
   parentRef: MutableRefObject<HTMLDivElement>,
   objectSize: number,
@@ -23,34 +26,19 @@ export const getObjectLimitsWithinParent = (
     max: maxLimit,
   };
 };
-
-export const getValueFromPercentage = ({
-  leftPercentage,
-  rightPercentage,
+export const getPercentageFromPrice = ({
+  price,
   minPrice,
   maxPrice,
-}: ValueToPercentageConfig): LeftAndRightValues => {
+}: PercentageFromPriceConfig) => {
   const priceRange = maxPrice - minPrice;
-  let leftValue = Math.round((leftPercentage * priceRange) / 100 + minPrice);
-  let rightValue = Math.round((rightPercentage * priceRange) / 100 + minPrice);
+  return Math.round(((price - minPrice) * 100) / priceRange);
+};
 
-  const isSameValue = leftValue === rightValue;
-  const isZeroPercentage = leftPercentage === 0 && rightPercentage === 0;
-  const isLeftPercentageBigger = leftPercentage > rightPercentage;
-
-  if (isSameValue && isZeroPercentage) {
-    leftValue = minPrice;
-    rightValue = minPrice + 1;
-  }
-  if (isSameValue && isLeftPercentageBigger) {
-    rightValue += 1;
-  }
-  if (isSameValue && !isLeftPercentageBigger) {
-    leftValue -= 1;
-  }
-
-  leftValue = Math.max(minPrice, leftValue);
-  rightValue = Math.min(maxPrice, rightValue);
-
-  return { leftValue, rightValue };
+export const getPriceFromPercentage = ({
+  percentage,
+  maxPrice,
+  minPrice,
+}: PriceFromPercentageConfig) => {
+  return Math.round((percentage / 100) * (maxPrice - minPrice) + minPrice);
 };

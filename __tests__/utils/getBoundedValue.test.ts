@@ -3,23 +3,23 @@ import { getBoundedValue } from '@/utils/utils';
 describe('GIVEN getBoundedValue function', () => {
   describe('WHEN the new value is within the min and max limits', () => {
     it('THEN it should return the new value', () => {
-      const newValue = 5;
+      const value = 5;
       const minLimit = 0;
       const maxLimit = 10;
 
-      const result = getBoundedValue(newValue, minLimit, maxLimit);
+      const result = getBoundedValue({ value, minLimit, maxLimit });
 
-      expect(result).toBe(newValue);
+      expect(result).toBe(value);
     });
   });
 
   describe('WHEN the new value is less than the min limit', () => {
     it('THEN it should return the min limit', () => {
-      const newValue = -1;
+      const value = -1;
       const minLimit = 0;
       const maxLimit = 10;
 
-      const result = getBoundedValue(newValue, minLimit, maxLimit);
+      const result = getBoundedValue({ value, minLimit, maxLimit });
 
       expect(result).toBe(minLimit);
     });
@@ -27,11 +27,11 @@ describe('GIVEN getBoundedValue function', () => {
 
   describe('WHEN the new value is greater than the max limit', () => {
     it('THEN it should return the max limit', () => {
-      const newValue = 15;
+      const value = 15;
       const minLimit = 0;
       const maxLimit = 10;
 
-      const result = getBoundedValue(newValue, minLimit, maxLimit);
+      const result = getBoundedValue({ value, minLimit, maxLimit });
 
       expect(result).toBe(maxLimit);
     });
