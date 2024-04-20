@@ -22,7 +22,7 @@ const Knob = ({
   onChange,
 }: KnobProps): JSX.Element => {
   const [isDragging, setIsDragging] = useState(false);
-  const [percent, setPercent] = useState(0);
+  const [percentage, setPercent] = useState(0);
   const [knobLeft, setKnobLeft] = useState(0);
   const knobRef = useRef<HTMLDivElement>(null);
   const knobParent = knobRef.current?.parentElement;
@@ -96,10 +96,10 @@ const Knob = ({
     const knobProperties = {
       left: knobLeft,
       rigth: knobLeft + knobSize,
-      percent,
+      percentage,
     };
     onChange(knobProperties);
-  }, [percent, knobLeft]);
+  }, [percentage, knobLeft]);
 
   return (
     <div

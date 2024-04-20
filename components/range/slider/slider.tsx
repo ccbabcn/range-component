@@ -16,7 +16,7 @@ const Slider = ({ onChange }): JSX.Element => {
   const knobInitialProperties: KnobOnChageProperties = {
     left: 0,
     rigth: 0,
-    percent: 0,
+    percentage: 0,
   };
 
   const [limits, setLimits]: [Limits, Dispatch<Limits>] = useState({
@@ -47,10 +47,10 @@ const Slider = ({ onChange }): JSX.Element => {
 
   useEffect(() => {
     onChange({
-      leftPercentage: leftKnobProperties.percent,
-      rightPercentage: rightKnobProperties.percent,
+      leftPercentage: leftKnobProperties.percentage,
+      rightPercentage: rightKnobProperties.percentage,
     });
-  }, [leftKnobProperties.percent, rightKnobProperties.percent]);
+  }, [leftKnobProperties.percentage, rightKnobProperties.percentage]);
 
   return (
     <div className="element relative flex w-full flex-col items-center justify-center">
