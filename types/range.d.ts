@@ -5,18 +5,27 @@ export type KnobOnChageProperties = {
 };
 
 export type SliderProps = {
-  priceLimit: PriceLimit;
+  currentLeftValue: number;
+  currentRightValue: number;
+  onChange: (params: LeftAndRightPercentage) => void;
+  percentageLeftInput: number;
+  percentageRightInput: number;
+  minValue: number;
+  maxValue: number;
 };
 
 export type RangeProps = {
   prices: PriceList;
 };
 export type KnobProps = {
-  maxLimit: number;
-  minLimit: number;
-  percentValue: number;
+  currentValue: number;
   isLeft: boolean;
-  onChange: (properties: KnobOnChageProperties) => void;
+  percentValue: number;
+  minLimit: number;
+  maxLimit: number;
+  minValue: number;
+  maxValue: number;
+  onChange: (params: KnobOnChageProperties) => void;
 };
 
 export type useMoveProps = {

@@ -28,16 +28,27 @@ export type PriceListPromise = Promise<PriceList>;
 export type LeftAndRightPercentage = Mapper<LeftAndRight<number>, 'Percentage'>;
 export type LeftAndRightValues = Mapper<LeftAndRight<number>, 'Value'>;
 
-export type PercentageFromPriceConfig = {
-  price: number;
-  minPrice: number;
-  maxPrice: number;
-};
 export type PriceFromPercentageConfig = {
-  percentage: number;
+  currentPercentage: number;
   maxPrice: number;
   minPrice: number;
 };
+export type PositionFromPercentageConfig = {
+  currentPercentage: number;
+  minPosition: number;
+  maxPosition: number;
+};
+export type ValueFromRangeConfig = {
+  current: number;
+  min: number;
+  max: number;
+};
+export type PercentageFromPriceConfig = Mapper<ValueFromRangeConfig, 'Price'>;
+export type PercentageFromPositionConfig = Mapper<
+  ValueFromRangeConfig,
+  'Position'
+>;
+
 export type GetBoundedValueConfig = {
   value: number;
   minLimit: number;

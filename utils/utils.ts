@@ -3,6 +3,8 @@ import {
   PriceFromPercentageConfig,
   PercentageFromPriceConfig,
   GetBoundedValueConfig,
+  PositionFromPercentageConfig,
+  PercentageFromPositionConfig,
 } from '@/types/common';
 import { MutableRefObject } from 'react';
 
@@ -27,18 +29,39 @@ export const getObjectLimitsWithinParent = (
   };
 };
 export const getPercentageFromPrice = ({
-  price,
+  currentPrice,
   minPrice,
   maxPrice,
 }: PercentageFromPriceConfig) => {
   const priceRange = maxPrice - minPrice;
-  return Math.round(((price - minPrice) * 100) / priceRange);
+  return Math.round(((currentPrice - minPrice) * 100) / priceRange);
 };
 
 export const getPriceFromPercentage = ({
-  percentage,
+  currentPercentage,
   maxPrice,
   minPrice,
 }: PriceFromPercentageConfig) => {
-  return Math.round((percentage / 100) * (maxPrice - minPrice) + minPrice);
+  return Math.round(
+    (currentPercentage / 100) * (maxPrice - minPrice) + minPrice,
+  );
+};
+
+export const getPositionFromPercentage = ({
+  currentPercentage,
+  minPosition,
+  maxPosition,
+}: PositionFromPercentageConfig) => {
+  return Math.round(
+    (currentPercentage / 100) * (maxPosition - minPosition) + minPosition,
+  );
+};
+
+export const getPercentageFromPosition = ({
+  currentPosition,
+  minPosition,
+  maxPosition,
+}: PercentageFromPositionConfig) => {
+  const positionRange = maxPosition - minPosition;
+  return Math.round(((currentPosition - minPosition) * 100) / positionRange);
 };
