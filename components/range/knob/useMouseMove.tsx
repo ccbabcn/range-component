@@ -15,11 +15,11 @@ const useMouseMove = ({
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging && objectRef.current) {
         const newPositionX = e.clientX - parentLeft;
-        const boundedPositionX = getBoundedValue(
-          newPositionX,
+        const boundedPositionX = getBoundedValue({
+          value: newPositionX,
           minLimit,
           maxLimit,
-        );
+        });
         updateKnobPosition(boundedPositionX);
       }
     };
