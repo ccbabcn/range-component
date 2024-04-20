@@ -1,4 +1,8 @@
-import { KnobOnChageProperties, KnobOnChangeSetter } from '@/types/range';
+import {
+  KnobOnChageProperties,
+  KnobOnChangeSetter,
+  SliderProps,
+} from '@/types/range';
 import { Limits } from '@/types/common';
 import { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import Knob from '@/components/range/knob/knob';
@@ -7,9 +11,25 @@ import { getObjectLimitsWithinParent } from '@/utils/utils';
 /**
  * Renders a slider component with two knobs for selecting a range of values.
  *
- * @return {JSX.Element} The rendered slider component.
+ * @param {Object} props - The component props.
+ * @param {number} props.currentLeftValue - The current value of the left knob.
+ * @param {number} props.currentRightValue - The current value of the right knob.
+ * @param {Function} props.onChange - A callback function that is called when the slider values change.
+ * @param {number} props.percentageLeftInput - The percentage value of the left knob.
+ * @param {number} props.percentageRightInput - The percentage value of the right knob.
+ * @param {number} props.minValue - The minimum value of the slider range.
+ * @param {number} props.maxValue - The maximum value of the slider range.
+ * @returns {JSX.Element} The rendered slider component.
  */
-const Slider = ({ onChange }): JSX.Element => {
+const Slider = ({
+  currentLeftValue,
+  currentRightValue,
+  onChange,
+  percentageLeftInput,
+  percentageRightInput,
+  minValue,
+  maxValue,
+}: SliderProps): JSX.Element => {
   const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
   const knobSize = 15;
 
@@ -61,18 +81,24 @@ const Slider = ({ onChange }): JSX.Element => {
         {sliderRef.current && (
           <div>
             <Knob
+              currentValue={currentLeftValue}
+              isLeft={true}
+              percentValue={percentageLeftInput}
               minLimit={limits.min}
               maxLimit={Math.max(rightKnobProperties.left - knobSize, knobSize)}
+              minValue={minValue}
+              maxValue={maxValue}
               onChange={handleOnLeftKnobChange}
-              isLeft={true}
-              percentValue={0}
             />
             <Knob
+              currentValue={currentRightValue}
+              isLeft={false}
+              percentValue={percentageRightInput}
               minLimit={leftKnobProperties.rigth}
               maxLimit={limits.max}
+              minValue={minValue}
+              maxValue={maxValue}
               onChange={handleOnRightKnobChange}
-              isLeft={false}
-              percentValue={100}
             />
             <div
               data-testid="progress-bar"
