@@ -31,10 +31,8 @@ export default async function Page() {
   const prices: PriceList = await getPrices();
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-y-4">
-      <h1 className="text-xl font-bold text-blue-500">Range component</h1>
-      <div className="w-1/2">
-        <Range prices={prices} />
-      </div>
+      <h1 className="text-xl font-bold text-black">Range component</h1>
+      <div className="w-1/2">{prices && <Range prices={prices} />}</div>
     </div>
   );
 }

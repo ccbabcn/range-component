@@ -15,11 +15,11 @@ const useTouchMove = ({
     const handleTouchMove = (e: TouchEvent) => {
       if (isDragging && objectRef.current) {
         const newPositionX = e.touches[0].clientX - parentLeft;
-        const boundedPositionX = getBoundedValue(
-          newPositionX,
+        const boundedPositionX = getBoundedValue({
+          value: newPositionX,
           minLimit,
           maxLimit,
-        );
+        });
         updateKnobPosition(boundedPositionX);
       }
     };

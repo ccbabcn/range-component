@@ -1,15 +1,21 @@
-import { LeftAndRightValues, Limits } from '@/types/common';
-import { ValueToPercentageConfig } from '@/types/range';
+import {
+  Limits,
+  PriceFromPercentageConfig,
+  PercentageFromPriceConfig,
+  GetBoundedValueConfig,
+  PositionFromPercentageConfig,
+  PercentageFromPositionConfig,
+  ValueFromRangeConfig,
+} from '@/types/common';
 import { MutableRefObject } from 'react';
 
-export const getBoundedValue = (
-  newValue: number,
-  minLimit = 0,
-  maxLimit = 0,
-) => {
-  return Math.min(Math.max(minLimit, newValue), maxLimit);
+export const getBoundedValue = ({
+  value,
+  minLimit,
+  maxLimit,
+}: GetBoundedValueConfig) => {
+  return Math.min(Math.max(minLimit, value), maxLimit);
 };
-
 export const getObjectLimitsWithinParent = (
   parentRef: MutableRefObject<HTMLDivElement>,
   objectSize: number,
@@ -24,33 +30,58 @@ export const getObjectLimitsWithinParent = (
   };
 };
 
-export const getValueFromPercentage = ({
-  leftPercentage,
-  rightPercentage,
+export const getValueInRangeFromPercentage = ({
+  current,
+  min,
+  max,
+}: ValueFromRangeConfig) => {
+  return Math.round((current / 100) * (max - min) + min);
+};
+export const getPriceInRangeFromPercentage = ({
+  currentPercentage,
+  maxPrice,
+  minPrice,
+}: PriceFromPercentageConfig) =>
+  getValueInRangeFromPercentage({
+    current: currentPercentage,
+    min: minPrice,
+    max: maxPrice,
+  });
+export const getPositionInRangeFromPercentage = ({
+  currentPercentage,
+  minPosition,
+  maxPosition,
+}: PositionFromPercentageConfig) =>
+  getValueInRangeFromPercentage({
+    current: currentPercentage,
+    min: minPosition,
+    max: maxPosition,
+  });
+export const getPercentageFromValueRange = ({
+  current,
+  min,
+  max,
+}: ValueFromRangeConfig) => {
+  const range = max - min;
+  return Math.round(((current - min) * 100) / range);
+};
+export const getPercentageFromPriceRange = ({
+  currentPrice,
   minPrice,
   maxPrice,
-}: ValueToPercentageConfig): LeftAndRightValues => {
-  const priceRange = maxPrice - minPrice;
-  let leftValue = Math.round((leftPercentage * priceRange) / 100 + minPrice);
-  let rightValue = Math.round((rightPercentage * priceRange) / 100 + minPrice);
-
-  const isSameValue = leftValue === rightValue;
-  const isZeroPercentage = leftPercentage === 0 && rightPercentage === 0;
-  const isLeftPercentageBigger = leftPercentage > rightPercentage;
-
-  if (isSameValue && isZeroPercentage) {
-    leftValue = minPrice;
-    rightValue = minPrice + 1;
-  }
-  if (isSameValue && isLeftPercentageBigger) {
-    rightValue += 1;
-  }
-  if (isSameValue && !isLeftPercentageBigger) {
-    leftValue -= 1;
-  }
-
-  leftValue = Math.max(minPrice, leftValue);
-  rightValue = Math.min(maxPrice, rightValue);
-
-  return { leftValue, rightValue };
-};
+}: PercentageFromPriceConfig) =>
+  getPercentageFromValueRange({
+    current: currentPrice,
+    min: minPrice,
+    max: maxPrice,
+  });
+export const getPercentageFromPositionRange = ({
+  currentPosition,
+  minPosition,
+  maxPosition,
+}: PercentageFromPositionConfig) =>
+  getPercentageFromValueRange({
+    current: currentPosition,
+    min: minPosition,
+    max: maxPosition,
+  });

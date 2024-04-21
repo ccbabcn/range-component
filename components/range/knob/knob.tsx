@@ -2,27 +2,39 @@ import { KnobProps } from '@/types/range';
 import React, { useRef, useState, useEffect } from 'react';
 import useMouseMove from './useMouseMove';
 import useTouchMove from './useTouchMove';
+import {
+  getBoundedValue,
+  getPercentageFromPositionRange,
+  getPositionInRangeFromPercentage,
+} from '@/utils/utils';
 
 /**
  * Renders a draggable knob component for a range input.
  *
  * @param {Object} props - The component props.
- * @param {number} props.maxLimit - The maximum value of the range input.
- * @param {number} props.minLimit - The minimum value of the range input.
+ * @param {number} props.currentValue - The current value of the range input for this knob.
+ * @param {boolean} props.isLeft - Indicates if the knob is on the left side of the range input for this knob.
+ * @param {number} props.minLimit - The minimum position of the knob.
+ * @param {number} props.maxLimit - The maximum position of the knob.
+ * @param {number} props.minValue - The min value of the range input for this knob.
+ * @param {number} props.maxValue - The maximum value of the range input for this knob.
  * @param {number} props.percentValue - The value of the knob in percentage.
- * @param {boolean} props.isLeft - Indicates if the knob is on the left side of the range input.
  * @param {function} props.onChange - The callback function called when the knob position changes.
+ *
  * @return {JSX.Element} The rendered knob component.
  */
 const Knob = ({
-  maxLimit,
-  minLimit,
-  percentValue,
+  currentValue,
   isLeft,
+  minLimit,
+  maxLimit,
+  minValue,
+  maxValue,
+  percentValue,
   onChange,
 }: KnobProps): JSX.Element => {
   const [isDragging, setIsDragging] = useState(false);
-  const [percent, setPercent] = useState(0);
+  const [percentage, setPercent] = useState(0);
   const [knobLeft, setKnobLeft] = useState(0);
   const knobRef = useRef<HTMLDivElement>(null);
   const knobParent = knobRef.current?.parentElement;
@@ -30,7 +42,6 @@ const Knob = ({
   const parentWidth = knobParent?.clientWidth;
   const knobSize = 15;
   const knobHalfSize = knobSize / 2;
-  const parentMaxLimit = parentWidth - knobHalfSize;
 
   const updateKnobPosition = (newPosition) => {
     knobRef.current.style.left = `${newPosition}px`;
@@ -46,8 +57,8 @@ const Knob = ({
   const handleTouchStart = () => {
     setIsDragging(true);
   };
-  //custom hooks to handle mouse and touch and update position
   useMouseMove({
+    //custom hooks to handle mouse events
     isDragging,
     objectRef: knobRef,
     parentLeft,
@@ -57,6 +68,7 @@ const Knob = ({
     stopDragging,
   });
   useTouchMove({
+    //custom hooks to handle touch events
     isDragging,
     objectRef: knobRef,
     parentLeft,
@@ -65,49 +77,78 @@ const Knob = ({
     updateKnobPosition,
     stopDragging,
   });
-  // Handle initial position
   useEffect(() => {
+    // Handle knob position
     if (parentWidth) {
-      if (percentValue === 0) {
-        const initialPos = isLeft ? knobHalfSize : knobSize;
-        updateKnobPosition(initialPos);
+      let knobNewPosition;
+      if (isLeft) {
+        knobNewPosition = getPositionInRangeFromPercentage({
+          currentPercentage: percentValue,
+          minPosition: knobHalfSize,
+          maxPosition: parentWidth - knobSize,
+        });
       }
-      if (percentValue > 0) {
-        const initialOffset = isLeft ? knobSize : knobHalfSize;
-        const knobNewPos = (percentValue * (parentWidth - initialOffset)) / 100;
-
-        updateKnobPosition(knobNewPos);
+      if (!isLeft) {
+        knobNewPosition = getPositionInRangeFromPercentage({
+          currentPercentage: percentValue,
+          minPosition: knobSize + knobHalfSize,
+          maxPosition: parentWidth - knobHalfSize,
+        });
       }
+      updateKnobPosition(knobNewPosition);
     }
   }, [parentWidth, percentValue]);
-  // Set percent from movement after bouncing
   useEffect(() => {
-    const isLimit = knobLeft - knobHalfSize <= 0;
-    const percent =
-      (isLimit
-        ? 0
-        : (knobLeft - knobHalfSize + (isLeft ? knobSize : 0)) /
-          (parentMaxLimit - knobHalfSize)) * 100;
-    setPercent(Math.round(percent));
+    // Set percent from movement after bouncing
+    let percent;
+    let boundedKnobPosition;
+
+    if (isLeft) {
+      boundedKnobPosition = getBoundedValue({
+        value: knobLeft,
+        minLimit: knobHalfSize,
+        maxLimit: parentWidth - knobSize,
+      });
+      percent = getPercentageFromPositionRange({
+        currentPosition: boundedKnobPosition,
+        minPosition: knobHalfSize,
+        maxPosition: parentWidth - knobSize,
+      });
+    }
+
+    if (!isLeft) {
+      boundedKnobPosition = getBoundedValue({
+        value: knobLeft,
+        minLimit: knobSize,
+        maxLimit: parentWidth - knobHalfSize,
+      });
+      percent = getPercentageFromPositionRange({
+        currentPosition: knobLeft,
+        minPosition: knobSize + knobHalfSize,
+        maxPosition: parentWidth - knobHalfSize,
+      });
+    }
+
+    setPercent(percent);
   }, [knobLeft]);
 
-  // Pass knob properties to parent on percent change
   useEffect(() => {
+    // Pass knob properties to parent on percent change
     const knobProperties = {
       left: knobLeft,
       rigth: knobLeft + knobSize,
-      percent,
+      percentage,
     };
     onChange(knobProperties);
-  }, [percent, knobLeft]);
+  }, [percentage, knobLeft]);
 
   return (
     <div
       ref={knobRef}
       aria-label="range"
-      aria-valuemin={0}
-      aria-valuemax={600}
-      aria-valuenow={0}
+      aria-valuenow={currentValue}
+      aria-valuemin={minValue}
+      aria-valuemax={maxValue}
       role="slider"
       tabIndex={0}
       onMouseDown={handleMouseDown}
