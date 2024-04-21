@@ -51,7 +51,7 @@ describe('GIVEN useTouchMove hook', () => {
   });
 
   describe('WHEN the user moves the touch while dragging', () => {
-    test('THEN it should update object ref position if no range was provided', () => {
+    it('THEN it should update object ref position if no range was provided', () => {
       const parentElementLeft = 100;
       const newPositionX = 120;
       const mockUpdateKnobPosition = jest.fn();
@@ -67,7 +67,7 @@ describe('GIVEN useTouchMove hook', () => {
         newPositionX - parentElementLeft,
       );
     });
-    test('THEN it should not update position if movement is not close to next value', () => {
+    it('THEN it should not update position if movement is not close to next value', () => {
       const newPositionX = 120;
       const firstRangeValue = 0;
       const mockUpdateKnobPosition = jest.fn();
@@ -83,7 +83,7 @@ describe('GIVEN useTouchMove hook', () => {
 
       expect(mockUpdateKnobPosition).toHaveBeenCalledWith(firstRangeValue);
     });
-    test('THEN it should update position if movement is close to next value', () => {
+    it('THEN it should update position if movement is close to next value', () => {
       const closestRangeValue = 50;
       const newPositionX = 160;
       const mockUpdateKnobPosition = jest.fn();
@@ -101,7 +101,7 @@ describe('GIVEN useTouchMove hook', () => {
     });
   });
   describe('WHEN the user moves the touch but it is not dragging', () => {
-    test('THEN it should NOT update object ref position', () => {
+    it('THEN it should NOT update object ref position', () => {
       const mockUpdateKnobPosition = jest.fn();
       const newPositionX = 120;
 

@@ -1,4 +1,4 @@
-import { PriceList } from './common';
+import { PriceList } from '@/types/common';
 
 export type KnobOnChageProperties = {
   left: number;
