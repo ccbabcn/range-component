@@ -23,8 +23,9 @@ export default async function Page() {
         Range component exercise 2
       </h1>
       <p className="text-slate-500">
-        This version of the exercise only lets the user select the limits
-        between fixed values from an array of prices given by the server.
+        This version of the exercise only lets the user select fixed values from
+        an array of prices given by the server. In this example the values are
+        1.99, 5.99, 10.99, 30.99, 50.99 and 70.99.
       </p>
       <div className="w-full">{prices && <Range prices={prices} />}</div>
     </main>
