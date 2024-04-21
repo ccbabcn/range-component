@@ -16,6 +16,9 @@ export type Limits = {
   min: number;
   max: number;
 };
+export type RangeValues = {
+  rangeValues: number[];
+};
 export type LeftAndRight<T> = {
   left: T;
   right: T;

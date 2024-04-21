@@ -14,9 +14,14 @@
 - [x] Configure test
 - [x] Do a initial test to ensure functionality
 
-## Next
+## Component
 
 - [x] Define component structure and logic
-      -- [x] Knob - custom handler
-      -- [x] Slider - knobs container and visual guide
-      -- [] Num inputs - display limits
+- [x] Knob - custom handler
+- [x] Slider - knobs container and visual guide
+- [x] Num inputs - display limits and current prices
+
+## Next
+
+- [] Adapt page router layout and structure for exercise 1 and 2
+- [] Modify the component to new functionality
