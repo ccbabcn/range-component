@@ -38,6 +38,20 @@ export type useMoveProps = {
   stopDragging: () => void;
 };
 
+export type InputOnUpdateProps = {
+  refValue: number;
+  inputPercentage: number;
+};
+
+export type InputProps = {
+  value: number;
+  min: number;
+  max: number;
+  minValue: number;
+  maxValue: number;
+  onUpdate: (params: InputOnUpdateProps) => void;
+};
+
 export type KnobOnChangeSetter = [
   KnobOnChageProperties,
   Dispatch<KnobOnChageProperties>,

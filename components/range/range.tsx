@@ -7,6 +7,12 @@ import Slider from '@/components/range/slider/slider';
 import Input from '@/components/range/input/input';
 import { getPriceInRangeFromPercentage } from '@/utils/utils';
 
+/**
+ * Renders a range component with two inputs and a slider.
+ *
+ * @param {object} prices - An array of prices.
+ * @return {JSX.Element} The rendered range component.
+ */
 const Range = ({ prices }: RangeProps): JSX.Element => {
   const priceLimit: PriceLimit = {
     minPrice: prices?.length > 0 ? Math.min(...prices) : 0,
