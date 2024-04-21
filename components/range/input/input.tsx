@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import useDebouncedValue from '@/hooks/useDebouncedValue';
 import { getBoundedValue, getPercentageFromPriceRange } from '@/utils/utils';
-import { InputProps } from '@/types/range';
+import { InputProps } from '@/components/range/types/range';
 
 /**
  * Renders an input element with specified min and max values, updates the input value based on user input,

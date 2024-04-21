@@ -1,4 +1,4 @@
-import { KnobPositionFromPercentageConfig } from '@/types/range';
+import { KnobPositionFromPercentageConfig } from '@/components/range/types/range';
 import { getPositionInRangeFromPercentage } from '@/utils/utils';
 
 const getKnobPositionFromPercentage = ({

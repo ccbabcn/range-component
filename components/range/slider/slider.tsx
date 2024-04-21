@@ -2,7 +2,7 @@ import {
   KnobOnChageProperties,
   KnobOnChangeSetter,
   SliderProps,
-} from '@/types/range';
+} from '@/components/range/types/range';
 import { Limits } from '@/types/common';
 import { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import Knob from '@/components/range/knob/knob';

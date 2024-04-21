@@ -1,7 +1,7 @@
 'use client';
 
 import { PriceLimit } from '@/types/common';
-import { RangeProps } from '@/types/range';
+import { RangeProps } from '@/components/range/types/range';
 import { useRef, useState } from 'react';
 import Slider from '@/components/range/slider/slider';
 import Input from '@/components/range/input/input';
