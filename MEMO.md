@@ -20,8 +20,11 @@
 - [x] Knob - custom handler
 - [x] Slider - knobs container and visual guide
 - [x] Num inputs - display limits and current prices
+- [x] Adapt page router layout and structure for exercise 1 and 2
+- [x] Modify the component to add functionality for accepting ranged or not lists
+- [x] Create a function to find the closest relative inside a range complexity Olog(n) if possible
+- [x] Update functionality
 
 ## Next
 
-- [] Adapt page router layout and structure for exercise 1 and 2
-- [] Modify the component to new functionality
+- [] Fine tuning
