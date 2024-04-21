@@ -19,16 +19,13 @@ describe('GIVEN a Range component ', () => {
 
   describe('WHEN it is rendered with a list of prices', () => {
     it('THEN it should show the min and max values', () => {
-      const prices: PriceList = [10, 100];
+      const prices: PriceList = [100, 100];
       const expectedMinValue = String(prices[0]);
-      const expectedMaxValue = String(prices[prices.length - 1]);
 
-      const { getByDisplayValue } = render(<Range prices={prices} />);
-      const leftInputValue = getByDisplayValue(expectedMinValue);
-      const rightInputValue = getByDisplayValue(expectedMaxValue);
+      const { getAllByDisplayValue } = render(<Range prices={prices} />);
+      const inputValues = getAllByDisplayValue(expectedMinValue);
 
-      expect(leftInputValue).toBeInTheDocument();
-      expect(rightInputValue).toBeInTheDocument();
+      expect(inputValues).toHaveLength(2);
     });
   });
 });

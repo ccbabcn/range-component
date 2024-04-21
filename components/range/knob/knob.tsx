@@ -1,9 +1,9 @@
-import { KnobProps } from '@/components/range/types/range';
 import React, { useRef, useState, useEffect } from 'react';
-import useMouseMove from './useMouseMove';
-import useTouchMove from './useTouchMove';
+import getKnobPositionFromPercentage from '@/components/range/knob/getKnobPositionFromPercentage';
+import useMouseMove from '@/components/range/knob/useMouseMove';
+import useTouchMove from '@/components/range/knob/useTouchMove';
 import { getBoundedValue, getPercentageFromPositionRange } from '@/utils/utils';
-import getKnobPositionFromPercentage from './getKnobPositionFromPercentage';
+import { KnobProps } from '@/components/range/types/range';
 
 /**
  * Renders a draggable knob component for a range input.
@@ -37,8 +37,8 @@ const Knob = ({
   const [knobLeft, setKnobLeft] = useState(0);
   const knobRef = useRef<HTMLDivElement>(null);
   const knobParent = knobRef.current?.parentElement;
-  const parentLeft = knobParent?.getBoundingClientRect().left;
-  const parentWidth = knobParent?.clientWidth;
+  const parentLeft = knobParent?.getBoundingClientRect().left || 0;
+  const parentWidth = knobParent?.clientWidth || 0;
   const knobSize = 15;
   const knobHalfSize = knobSize / 2;
   const [fixedPositions, setFixedPositions] = useState<number[]>([]);
@@ -58,9 +58,11 @@ const Knob = ({
     }
   }, [parentWidth]);
 
-  const updateKnobPosition = (newPosition) => {
-    knobRef.current.style.left = `${newPosition}px`;
-    setKnobLeft(newPosition);
+  const updateKnobPosition = (newPosition: number) => {
+    if (knobRef?.current?.style?.left) {
+      knobRef.current.style.left = `${newPosition}px`;
+      setKnobLeft(newPosition);
+    }
   };
   const stopDragging = () => {
     setIsDragging(false);
@@ -111,8 +113,8 @@ const Knob = ({
   }, [parentWidth, percentValue]);
   useEffect(() => {
     // Set percent from movement after bouncing
-    let percent;
-    let boundedKnobPosition;
+    let percent = 0;
+    let boundedKnobPosition = 0;
 
     if (isLeft) {
       boundedKnobPosition = getBoundedValue({

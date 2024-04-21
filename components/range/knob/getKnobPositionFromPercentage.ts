@@ -8,7 +8,7 @@ const getKnobPositionFromPercentage = ({
   parentWidth,
   percentValue,
 }: KnobPositionFromPercentageConfig) => {
-  let knobPosition;
+  let knobPosition = 0;
   if (isLeft) {
     knobPosition = getPositionInRangeFromPercentage({
       currentPercentage: percentValue,

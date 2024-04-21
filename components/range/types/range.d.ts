@@ -74,3 +74,8 @@ export type KnobPositionFromPercentageConfig = {
   parentWidth: number;
   percentValue: number;
 };
+
+export type onInputUpdateConfig = {
+  refValue: number;
+  inputPercentage: number;
+};

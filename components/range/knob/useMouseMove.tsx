@@ -1,5 +1,5 @@
-import { useMoveProps } from '@/components/range/types/range';
 import { useEffect } from 'react';
+import { useMoveProps } from '@/components/range/types/range';
 import { findClosestValueinValueRange, getBoundedValue } from '@/utils/utils';
 
 const useMouseMove = ({

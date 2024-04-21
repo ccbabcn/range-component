@@ -1,5 +1,5 @@
-import '@/app/global.css';
 import Link from 'next/link';
+import '@/app/global.css';
 
 export default function RootLayout({
   children,
@@ -32,7 +32,7 @@ export default function RootLayout({
               </Link>
             </div>
           </div>
-          <div className="flex-grow p-6 md:overflow-y-auto md:p-12">
+          <div className="flex-grow p-6 md:max-w-2xl md:overflow-y-auto md:p-12">
             {children}
           </div>
         </div>

@@ -1,15 +1,15 @@
-import {
-  KnobOnChageProperties,
-  KnobOnChangeSetter,
-  SliderProps,
-} from '@/components/range/types/range';
-import { Limits } from '@/types/common';
 import { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import Knob from '@/components/range/knob/knob';
 import {
   getObjectLimitsWithinParent,
   getPercentageFromPriceRange,
 } from '@/utils/utils';
+import {
+  KnobOnChageProperties,
+  KnobOnChangeSetter,
+  SliderProps,
+} from '@/components/range/types/range';
+import { Limits } from '@/types/common';
 
 /**
  * Renders a slider component with two knobs for selecting a range of values.
@@ -37,7 +37,7 @@ const Slider = ({
   refRightValue,
   refLeftValue,
 }: SliderProps): JSX.Element => {
-  const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
+  const sliderRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
   const knobSize = 15;
 
   const percentagesPerPrice = prices.map((price) => {
