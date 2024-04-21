@@ -1,15 +1,17 @@
 import { useMoveProps } from '@/types/range';
 import { useEffect } from 'react';
-import { getBoundedValue } from '@/utils/utils';
+import { findClosestValueinValueRange, getBoundedValue } from '@/utils/utils';
 
 const useMouseMove = ({
   isDragging,
-  objectRef,
-  parentLeft,
+  isFixedRange,
+  fixedPositions,
   minLimit,
   maxLimit,
-  updateKnobPosition,
+  objectRef,
+  parentLeft,
   stopDragging,
+  updateKnobPosition,
 }: useMoveProps) => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -20,7 +22,18 @@ const useMouseMove = ({
           minLimit,
           maxLimit,
         });
-        updateKnobPosition(boundedPositionX);
+        if (isFixedRange) {
+          const closestPosition = findClosestValueinValueRange({
+            values: fixedPositions,
+            prev: 0,
+            next: fixedPositions.length - 1,
+            currentValue: boundedPositionX,
+          });
+          updateKnobPosition(closestPosition);
+        }
+        if (!isFixedRange) {
+          updateKnobPosition(boundedPositionX);
+        }
       }
     };
 

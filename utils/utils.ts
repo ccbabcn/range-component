@@ -6,6 +6,7 @@ import {
   PositionFromPercentageConfig,
   PercentageFromPositionConfig,
   ValueFromRangeConfig,
+  FindClosestValueInRangeConfig,
 } from '@/types/common';
 import { MutableRefObject } from 'react';
 
@@ -85,3 +86,42 @@ export const getPercentageFromPositionRange = ({
     min: minPosition,
     max: maxPosition,
   });
+
+export const findClosestValueinValueRange = ({
+  values,
+  prev,
+  next,
+  currentValue,
+}: FindClosestValueInRangeConfig): number => {
+  if (prev == next) {
+    return values[prev];
+  }
+  const mid = Math.floor((prev + next) / 2);
+  const prevClosest = findClosestValueinValueRange({
+    values,
+    prev,
+    next: mid,
+    currentValue,
+  });
+  const nextClosest = findClosestValueinValueRange({
+    values,
+    prev: mid + 1,
+    next,
+    currentValue,
+  });
+
+  if (nextClosest === undefined) {
+    return values[prev];
+  }
+
+  if (prevClosest === undefined) {
+    return values[next];
+  }
+  if (
+    Math.abs(prevClosest - currentValue) <= Math.abs(nextClosest - currentValue)
+  ) {
+    return prevClosest;
+  } else {
+    return nextClosest;
+  }
+};

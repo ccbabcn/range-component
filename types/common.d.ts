@@ -57,3 +57,9 @@ export type GetBoundedValueConfig = {
   minLimit: number;
   maxLimit: number;
 };
+export type FindClosestValueInRangeConfig = {
+  values: number[];
+  prev: number;
+  next: number;
+  currentValue: number;
+};

@@ -1,3 +1,5 @@
+import { PriceList } from './common';
+
 export type KnobOnChageProperties = {
   left: number;
   rigth: number;
@@ -6,10 +8,12 @@ export type KnobOnChageProperties = {
 
 export type SliderProps = {
   onChange: (params: LeftAndRightPercentage) => void;
-  percentageLeftInput: number;
-  percentageRightInput: number;
+  isFixedRange: boolean;
   minValue: number;
   maxValue: number;
+  percentageLeftInput: number;
+  percentageRightInput: number;
+  prices: PriceList;
   refLeftValue: number;
   refRightValue: number;
 };
@@ -19,23 +23,27 @@ export type RangeProps = {
 };
 export type KnobProps = {
   currentValue: number;
+  fixedPercentages: number[];
+  isFixedRange: boolean;
   isLeft: boolean;
-  percentValue: number;
   minLimit: number;
   maxLimit: number;
   minValue: number;
   maxValue: number;
   onChange: (params: KnobOnChageProperties) => void;
+  percentValue: number;
 };
 
 export type useMoveProps = {
   isDragging: boolean;
-  objectRef: React.RefObject<HTMLDivElement>;
-  parentLeft: number;
+  isFixedRange: boolean;
+  fixedPositions: number[];
   minLimit: number;
   maxLimit: number;
-  updateKnobPosition: (newPosition: number) => void;
+  objectRef: React.RefObject<HTMLDivElement>;
+  parentLeft: number;
   stopDragging: () => void;
+  updateKnobPosition: (newPosition: number) => void;
 };
 
 export type InputOnUpdateProps = {
@@ -44,6 +52,8 @@ export type InputOnUpdateProps = {
 };
 
 export type InputProps = {
+  isDisabled: boolean;
+  isLeft: boolean;
   value: number;
   min: number;
   max: number;
@@ -56,3 +66,11 @@ export type KnobOnChangeSetter = [
   KnobOnChageProperties,
   Dispatch<KnobOnChageProperties>,
 ];
+
+export type KnobPositionFromPercentageConfig = {
+  isLeft: boolean;
+  knobSize: number;
+  knobHalfSize: number;
+  parentWidth: number;
+  percentValue: number;
+};

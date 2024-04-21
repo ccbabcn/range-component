@@ -2,11 +2,8 @@ import { KnobProps } from '@/types/range';
 import React, { useRef, useState, useEffect } from 'react';
 import useMouseMove from './useMouseMove';
 import useTouchMove from './useTouchMove';
-import {
-  getBoundedValue,
-  getPercentageFromPositionRange,
-  getPositionInRangeFromPercentage,
-} from '@/utils/utils';
+import { getBoundedValue, getPercentageFromPositionRange } from '@/utils/utils';
+import getKnobPositionFromPercentage from './getKnobPositionFromPercentage';
 
 /**
  * Renders a draggable knob component for a range input.
@@ -25,13 +22,15 @@ import {
  */
 const Knob = ({
   currentValue,
+  fixedPercentages,
+  isFixedRange,
   isLeft,
   minLimit,
   maxLimit,
   minValue,
   maxValue,
-  percentValue,
   onChange,
+  percentValue,
 }: KnobProps): JSX.Element => {
   const [isDragging, setIsDragging] = useState(false);
   const [percentage, setPercent] = useState(0);
@@ -42,6 +41,22 @@ const Knob = ({
   const parentWidth = knobParent?.clientWidth;
   const knobSize = 15;
   const knobHalfSize = knobSize / 2;
+  const [fixedPositions, setFixedPositions] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (parentWidth) {
+      const fixedPositions = fixedPercentages.map((percentage) => {
+        return getKnobPositionFromPercentage({
+          isLeft,
+          knobSize,
+          knobHalfSize,
+          parentWidth,
+          percentValue: percentage,
+        });
+      });
+      setFixedPositions(fixedPositions);
+    }
+  }, [parentWidth]);
 
   const updateKnobPosition = (newPosition) => {
     knobRef.current.style.left = `${newPosition}px`;
@@ -57,44 +72,40 @@ const Knob = ({
   const handleTouchStart = () => {
     setIsDragging(true);
   };
+  //custom hooks to handle mouse events
   useMouseMove({
-    //custom hooks to handle mouse events
     isDragging,
-    objectRef: knobRef,
-    parentLeft,
+    isFixedRange,
+    fixedPositions,
     minLimit,
     maxLimit,
-    updateKnobPosition,
+    objectRef: knobRef,
+    parentLeft,
     stopDragging,
+    updateKnobPosition,
   });
+  //custom hooks to handle touch events
   useTouchMove({
-    //custom hooks to handle touch events
     isDragging,
-    objectRef: knobRef,
-    parentLeft,
+    isFixedRange,
+    fixedPositions,
     minLimit,
     maxLimit,
-    updateKnobPosition,
+    objectRef: knobRef,
+    parentLeft,
     stopDragging,
+    updateKnobPosition,
   });
   useEffect(() => {
-    // Handle knob position
+    // Handle knob position from percent change
     if (parentWidth) {
-      let knobNewPosition;
-      if (isLeft) {
-        knobNewPosition = getPositionInRangeFromPercentage({
-          currentPercentage: percentValue,
-          minPosition: knobHalfSize,
-          maxPosition: parentWidth - knobSize,
-        });
-      }
-      if (!isLeft) {
-        knobNewPosition = getPositionInRangeFromPercentage({
-          currentPercentage: percentValue,
-          minPosition: knobSize + knobHalfSize,
-          maxPosition: parentWidth - knobHalfSize,
-        });
-      }
+      const knobNewPosition = getKnobPositionFromPercentage({
+        isLeft,
+        knobSize,
+        knobHalfSize,
+        parentWidth,
+        percentValue,
+      });
       updateKnobPosition(knobNewPosition);
     }
   }, [parentWidth, percentValue]);
@@ -162,11 +173,11 @@ const Knob = ({
         transform: 'translate(-50%, -50%)',
         height: knobSize,
         width: knobSize,
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
         borderRadius: '50%',
       }}
     >
-      <div className="knob:active h-full w-full cursor-grab rounded-full bg-black hover:animate-expand focus:animate-expand active:cursor-grabbing" />
+      <div className="knob:active h-full w-full cursor-grab rounded-full bg-slate-800 hover:animate-expand focus:animate-expand active:cursor-grabbing" />
     </div>
   );
 };

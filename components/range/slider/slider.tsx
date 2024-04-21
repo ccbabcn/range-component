@@ -6,32 +6,47 @@ import {
 import { Limits } from '@/types/common';
 import { Dispatch, MutableRefObject, useEffect, useRef, useState } from 'react';
 import Knob from '@/components/range/knob/knob';
-import { getObjectLimitsWithinParent } from '@/utils/utils';
+import {
+  getObjectLimitsWithinParent,
+  getPercentageFromPriceRange,
+} from '@/utils/utils';
 
 /**
  * Renders a slider component with two knobs for selecting a range of values.
  *
- * @param {Object} props - The component props.
- * @param {number} props.currentLeftValue - The current value of the left knob.
- * @param {number} props.currentRightValue - The current value of the right knob.
- * @param {Function} props.onChange - A callback function that is called when the slider values change.
- * @param {number} props.percentageLeftInput - The percentage value of the left knob.
- * @param {number} props.percentageRightInput - The percentage value of the right knob.
- * @param {number} props.minValue - The minimum value of the slider range.
- * @param {number} props.maxValue - The maximum value of the slider range.
+ * @param {SliderProps} props component props.
+ * @param {boolean} isFixedRange - Whether the slider is in fixed range mode.
+ * @param {number} currentLeftValue - The current value of the left knob.
+ * @param {number} currentRightValue - The current value of the right knob.
+ * @param {Function} onChange - A callback function that is called when the slider values change.
+ * @param {number} percentageLeftInput - The percentage value of the left knob.
+ * @param {number} percentageRightInput - The percentage value of the right knob.
+ * @param {PriceList} prices - An array of prices.
+ * @param {number} minValue - The minimum value of the slider range.
+ * @param {number} maxValue - The maximum value of the slider range.
  * @returns {JSX.Element} The rendered slider component.
  */
 const Slider = ({
+  isFixedRange,
+  minValue,
+  maxValue,
   onChange,
   percentageLeftInput,
   percentageRightInput,
-  minValue,
-  maxValue,
+  prices,
   refRightValue,
   refLeftValue,
 }: SliderProps): JSX.Element => {
   const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
   const knobSize = 15;
+
+  const percentagesPerPrice = prices.map((price) => {
+    return getPercentageFromPriceRange({
+      currentPrice: price,
+      minPrice: minValue,
+      maxPrice: maxValue,
+    });
+  });
 
   const knobInitialProperties: KnobOnChageProperties = {
     left: 0,
@@ -75,6 +90,7 @@ const Slider = ({
   return (
     <div className="element relative flex w-full flex-col items-center justify-center">
       <div
+        data-testid="slider"
         ref={sliderRef}
         className="slider relative box-border flex h-4 w-full flex-col justify-center"
       >
@@ -82,16 +98,20 @@ const Slider = ({
           <div>
             <Knob
               currentValue={refLeftValue}
+              fixedPercentages={percentagesPerPrice}
+              isFixedRange={isFixedRange}
               isLeft={true}
-              percentValue={percentageLeftInput}
               minLimit={limits.min}
               maxLimit={Math.max(rightKnobProperties.left - knobSize, knobSize)}
               minValue={minValue}
               maxValue={maxValue}
               onChange={handleOnLeftKnobChange}
+              percentValue={percentageLeftInput}
             />
             <Knob
               currentValue={refRightValue}
+              fixedPercentages={percentagesPerPrice}
+              isFixedRange={isFixedRange}
               isLeft={false}
               percentValue={percentageRightInput}
               minLimit={leftKnobProperties.rigth}
@@ -103,7 +123,7 @@ const Slider = ({
             <div
               data-testid="progress-bar"
               role="progressbar"
-              className="slider h-1 w-full rounded-full bg-black"
+              className="h-1 w-full rounded-full bg-slate-800"
             />
           </div>
         )}

@@ -1,52 +1,34 @@
-import Slider from '@/components/range/slider/slider';
-import { render, fireEvent } from '@testing-library/react';
+import Range from '@/components/range/range';
+import { PriceList } from '@/types/common';
+import { render } from '@testing-library/react';
 
-describe('GIVEN a Slider component ', () => {
+describe('GIVEN a Range component ', () => {
   describe('WHEN instantiated', () => {
-    it('THEN it should render two knobs and a progress bar', () => {
-      const { getByTestId } = render(
-        <Slider
-          percentageLeftInput={0}
-          percentageRightInput={100}
-          maxValue={1}
-          minValue={100}
-          refLeftValue={null}
-          refRightValue={null}
-          onChange={() => {}}
-        />,
-      );
+    it('THEN it should render all the childrencomponents', () => {
+      const prices: PriceList = [10, 100];
+      const { getByTestId } = render(<Range prices={prices} />);
+      const leftInput = getByTestId('left-input');
+      const rightInput = getByTestId('right-input');
+      const slider = getByTestId('slider');
 
-      const leftKnob = getByTestId('left-knob');
-      const rigthKnob = getByTestId('right-knob');
-      const progessBar = getByTestId('progress-bar');
-
-      expect(leftKnob).toBeInTheDocument();
-      expect(rigthKnob).toBeInTheDocument();
-      expect(progessBar).toBeInTheDocument();
+      expect(leftInput).toBeInTheDocument();
+      expect(rightInput).toBeInTheDocument();
+      expect(slider).toBeInTheDocument();
     });
   });
 
-  describe('WHEN it is rendered and the user interacts with a knob', () => {
-    it('THEN should update knob position accordingly', () => {
-      const mockOnChange = jest.fn();
-      const { getByTestId } = render(
-        <Slider
-          percentageLeftInput={0}
-          percentageRightInput={100}
-          maxValue={1}
-          minValue={100}
-          refLeftValue={null}
-          refRightValue={null}
-          onChange={mockOnChange}
-        />,
-      );
-      const leftKnob = getByTestId('left-knob');
+  describe('WHEN it is rendered with a list of prices', () => {
+    it('THEN it should show the min and max values', () => {
+      const prices: PriceList = [10, 100];
+      const expectedMinValue = String(prices[0]);
+      const expectedMaxValue = String(prices[prices.length - 1]);
 
-      fireEvent.mouseDown(leftKnob);
-      fireEvent.mouseMove(document, { clientX: 15 });
+      const { getByDisplayValue } = render(<Range prices={prices} />);
+      const leftInputValue = getByDisplayValue(expectedMinValue);
+      const rightInputValue = getByDisplayValue(expectedMaxValue);
 
-      expect(leftKnob.style.left).toBe('15px');
-      expect(mockOnChange).toHaveBeenCalled();
+      expect(leftInputValue).toBeInTheDocument();
+      expect(rightInputValue).toBeInTheDocument();
     });
   });
 });
