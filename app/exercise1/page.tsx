@@ -23,8 +23,8 @@ export default async function Page() {
         Range component exercise 1
       </h1>
       <p className="text-slate-500">
-        This version of the exercise lets the user set a new price limit between
-        a minimum and maximum given by the server.
+        This version of the exercise lets the user select any value within a
+        minimum and maximum range given by the server.
       </p>
       <div className="w-full">{prices && <Range prices={prices} />}</div>
     </main>
