@@ -2,14 +2,10 @@
 
 import { PriceLimit } from '@/types/common';
 import { RangeProps } from '@/types/range';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Slider from '@/components/range/slider/slider';
-import useDebouncedValue from '@/hooks/useDebouncedValue';
-import {
-  getBoundedValue,
-  getPercentageFromPriceRange,
-  getPriceInRangeFromPercentage,
-} from '@/utils/utils';
+import Input from '@/components/range/input/input';
+import { getPriceInRangeFromPercentage } from '@/utils/utils';
 
 const Range = ({ prices }: RangeProps): JSX.Element => {
   const priceLimit: PriceLimit = {
@@ -24,58 +20,11 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
   );
   const letInputRef = useRef(Number(leftInputValue));
   const rightInputRef = useRef(Number(rightInputValue));
-  const handleLeftInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLeftInputValue(String(e.target.value));
-  };
-  const handleRightInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRightInputValue(String(e.target.value));
-  };
 
   const [boundedLeftInputPercentage, setBoundedLeftInputPercentage] =
     useState(0);
   const [boundedRightInputPercentage, setBoundedRightInputPercentage] =
     useState(100);
-
-  const debouncedLeftInputValue = useDebouncedValue({
-    value: leftInputValue,
-    delay: 700,
-  });
-  const debouncedRightInputValue = useDebouncedValue({
-    value: rightInputValue,
-    delay: 700,
-  });
-
-  useEffect(() => {
-    const boundedLeftValue = getBoundedValue({
-      value: Number(debouncedLeftInputValue),
-      minLimit: priceLimit.minPrice,
-      maxLimit: Number(rightInputValue),
-    });
-    const leftPercentage = getPercentageFromPriceRange({
-      currentPrice: boundedLeftValue,
-      minPrice: priceLimit.minPrice,
-      maxPrice: priceLimit.maxPrice,
-    });
-
-    setLeftInputValue(String(boundedLeftValue));
-    setBoundedLeftInputPercentage(leftPercentage);
-  }, [debouncedLeftInputValue]);
-
-  useEffect(() => {
-    const boundedRightValue = getBoundedValue({
-      value: Number(debouncedRightInputValue),
-      minLimit: Number(leftInputValue),
-      maxLimit: priceLimit.maxPrice,
-    });
-    const rightPercentage = getPercentageFromPriceRange({
-      currentPrice: boundedRightValue,
-      minPrice: priceLimit.minPrice,
-      maxPrice: priceLimit.maxPrice,
-    });
-
-    setRightInputValue(String(boundedRightValue));
-    setBoundedRightInputPercentage(rightPercentage);
-  }, [debouncedRightInputValue]);
 
   const handleSliderChange = ({ leftPercentage, rightPercentage }) => {
     const leftValue = getPriceInRangeFromPercentage({
@@ -93,18 +42,25 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
     setRightInputValue(String(rightValue));
   };
 
+  const handleLeftInputChange = ({ refValue, inputPercentage }) => {
+    letInputRef.current = refValue;
+    setBoundedLeftInputPercentage(inputPercentage);
+  };
+
+  const handleRightInputChange = ({ refValue, inputPercentage }) => {
+    rightInputRef.current = refValue;
+    setBoundedRightInputPercentage(inputPercentage);
+  };
+
   return (
     <div className="conatiner flex flex-row items-center justify-center gap-x-2 stroke-black">
-      <input
-        className="w-12 text-center"
-        type="number"
-        id="left-input"
-        name="left-input"
+      <Input
+        value={Number(leftInputValue)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
-        placeholder={String(leftInputValue)}
-        value={leftInputValue}
-        onChange={handleLeftInputChange}
+        minValue={priceLimit.minPrice}
+        maxValue={Number(rightInputValue)}
+        onUpdate={handleLeftInputChange}
       />
       <Slider
         onChange={handleSliderChange}
@@ -112,19 +68,16 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
         percentageRightInput={boundedRightInputPercentage}
         maxValue={priceLimit.maxPrice}
         minValue={priceLimit.minPrice}
-        currentLeftValue={letInputRef?.current}
-        currentRightValue={rightInputRef?.current}
+        refLeftValue={letInputRef?.current}
+        refRightValue={rightInputRef?.current}
       />
-      <input
-        className="text-center"
-        type="number"
-        id="right-input"
-        name="right-input"
+      <Input
+        value={Number(rightInputValue)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
-        placeholder={String(priceLimit.maxPrice)}
-        value={rightInputValue}
-        onChange={handleRightInputChange}
+        minValue={Number(leftInputValue)}
+        maxValue={priceLimit.maxPrice}
+        onUpdate={handleRightInputChange}
       />
     </div>
   );
