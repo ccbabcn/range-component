@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Range Component',
@@ -12,13 +11,32 @@ export const metadata: Metadata = {
   icons: '/favicon.ico',
 };
 export default async function Page() {
-  // const prices: PriceList = await getPrices();
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-slate-800">
-        Welcome to the main page
-      </h1>
-      <Link href="/exercise1">Go to Exercise 1</Link>
+    <div className="flex flex-col gap-y-5 text-slate-800">
+      <h1 className="text-3xl font-bold">Custom Range Component</h1>
+      <p>
+        This project contains a custom range component with two usage modes.
+      </p>
+      <p>
+        <span className="font-bold text-slate-700">Exercise 1</span> allows
+        users to set new values by dragging the handles or clicking on the
+        minimum and maximum number labels. The values are constrained within the
+        specified minimum and maximum input values. Hovering over handles
+        enlarges them and changes the cursor type. Dragging a handle changes the
+        cursor to indicate dragging. The minimum and maximum values cannot be
+        crossed. The component uses a mocked HTTP service to provide the minimum
+        and maximum values.
+      </p>
+      <p>
+        <span className="font-bold text-slate-700">Exercise 2</span> allows
+        users to set new values by dragging the handles or clicking on the
+        minimum and maximum number labels. The values are constrained within the
+        specified minimum and maximum input values. Hovering over handles
+        enlarges them and changes the cursor type. Dragging a handle changes the
+        cursor to indicate dragging. The minimum and maximum values cannot be
+        crossed. The component uses a mocked HTTP service to provide the minimum
+        and maximum values.
+      </p>
     </div>
   );
 }
