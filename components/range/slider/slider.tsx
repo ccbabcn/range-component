@@ -103,7 +103,7 @@ const Slider = ({
             <div
               data-testid="progress-bar"
               role="progressbar"
-              className="slider h-1 w-full rounded-full bg-black"
+              className="h-1 w-full rounded-full bg-slate-800"
             />
           </div>
         )}

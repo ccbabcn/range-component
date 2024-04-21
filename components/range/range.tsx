@@ -18,6 +18,8 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
     minPrice: prices?.length > 0 ? Math.min(...prices) : 0,
     maxPrice: prices?.length > 0 ? Math.max(...prices) : 0,
   };
+  const isFixedRange = prices.length > 2;
+
   const [leftInputValue, setLeftInputValue] = useState(
     String(priceLimit.minPrice),
   );
@@ -59,8 +61,9 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
   };
 
   return (
-    <div className="conatiner flex flex-row items-center justify-center gap-x-2 stroke-black">
+    <div className="conatiner flex flex-row items-center justify-center gap-x-2">
       <Input
+        isDisabled={isFixedRange}
         value={Number(leftInputValue)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
@@ -78,6 +81,7 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
         refRightValue={rightInputRef?.current}
       />
       <Input
+        isDisabled={isFixedRange}
         value={Number(rightInputValue)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}

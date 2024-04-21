@@ -44,6 +44,7 @@ export type InputOnUpdateProps = {
 };
 
 export type InputProps = {
+  isDisabled: boolean;
   value: number;
   min: number;
   max: number;

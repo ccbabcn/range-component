@@ -162,11 +162,11 @@ const Knob = ({
         transform: 'translate(-50%, -50%)',
         height: knobSize,
         width: knobSize,
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
         borderRadius: '50%',
       }}
     >
-      <div className="knob:active h-full w-full cursor-grab rounded-full bg-black hover:animate-expand focus:animate-expand active:cursor-grabbing" />
+      <div className="knob:active h-full w-full cursor-grab rounded-full bg-slate-800 hover:animate-expand focus:animate-expand active:cursor-grabbing" />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { InputProps } from '@/types/range';
  * and triggers onUpdate function with the updated input value.
  *
  * @param {InputProps} value - The initial value of the input
+ * @param {number} isDisabled - Whether the input is active
  * @param {number} min - The minimum value allowed for the input
  * @param {number} max - The maximum value allowed for the input
  * @param {number} minValue - The minimum value to be displayed
@@ -16,6 +17,7 @@ import { InputProps } from '@/types/range';
  * @return {JSX.Element} The input element with specified properties
  */
 const Input = ({
+  isDisabled,
   value,
   min,
   max,
@@ -68,7 +70,8 @@ const Input = ({
 
   return (
     <input
-      className="w-12 text-center"
+      disabled={isDisabled}
+      className={`w-20 rounded-full ${!isDisabled && 'border border-slate-200'} bg-transparent text-center`}
       type="number"
       id="left-input"
       name="left-input"
