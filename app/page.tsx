@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   creator: 'Cristian Bermudez Agudelo',
   icons: '/favicon.ico',
 };
-export default async function Page() {
+export default function Page() {
   return (
     <div className="flex flex-col gap-y-5 text-slate-800">
       <h1 className="text-3xl font-bold">Custom Range Component</h1>

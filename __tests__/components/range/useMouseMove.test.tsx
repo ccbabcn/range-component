@@ -4,12 +4,29 @@ import useMouseMove from '@/components/range/knob/useMouseMove';
 const TestComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
   useMouseMove({
     isDragging,
-    objectRef: { current: document.createElement('div') },
-    parentLeft: 100,
+    isFixedRange: false,
+    fixedPositions: [],
     minLimit: 0,
     maxLimit: 100,
-    updateKnobPosition: mockFn,
+    objectRef: { current: document.createElement('div') },
+    parentLeft: 100,
     stopDragging: jest.fn(),
+    updateKnobPosition: mockFn,
+  });
+
+  return <div>Test Component</div>;
+};
+const TestFixedRangeComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
+  useMouseMove({
+    isDragging,
+    isFixedRange: true,
+    fixedPositions: [0, 50, 100],
+    minLimit: 0,
+    maxLimit: 100,
+    objectRef: { current: document.createElement('div') },
+    parentLeft: 100,
+    stopDragging: jest.fn(),
+    updateKnobPosition: mockFn,
   });
 
   return <div>Test Component</div>;
@@ -48,6 +65,32 @@ describe('GIVEN useMouseMove hook', () => {
       expect(mockUpdateKnobPosition).toHaveBeenCalledWith(
         newPositionX - parentElementLeft,
       );
+    });
+    test('THEN it should not update position if movement is not close to next value', () => {
+      const firstRangeValue = 0;
+      const newPositionX = 120;
+      const mockUpdateKnobPosition = jest.fn();
+
+      render(<TestFixedRangeComponent mockFn={mockUpdateKnobPosition} />);
+      const mouseMoveEvent = new MouseEvent('mousemove', {
+        clientX: newPositionX,
+      });
+      document.dispatchEvent(mouseMoveEvent);
+
+      expect(mockUpdateKnobPosition).toHaveBeenCalledWith(firstRangeValue);
+    });
+    test('THEN it should update position if movement is close to next value', () => {
+      const closestRangeValue = 50;
+      const newPositionX = 160;
+      const mockUpdateKnobPosition = jest.fn();
+
+      render(<TestFixedRangeComponent mockFn={mockUpdateKnobPosition} />);
+      const mouseMoveEvent = new MouseEvent('mousemove', {
+        clientX: newPositionX,
+      });
+      document.dispatchEvent(mouseMoveEvent);
+
+      expect(mockUpdateKnobPosition).toHaveBeenCalledWith(closestRangeValue);
     });
   });
   describe('WHEN the user moves the mouse but it is not dragging', () => {

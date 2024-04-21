@@ -4,12 +4,29 @@ import useTouchMove from '@/components/range/knob/useTouchMove';
 const TestComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
   useTouchMove({
     isDragging,
-    objectRef: { current: document.createElement('div') },
-    parentLeft: 100,
+    isFixedRange: false,
+    fixedPositions: [],
     minLimit: 0,
     maxLimit: 100,
-    updateKnobPosition: mockFn,
+    objectRef: { current: document.createElement('div') },
+    parentLeft: 100,
     stopDragging: jest.fn(),
+    updateKnobPosition: mockFn,
+  });
+
+  return <div>Test Component</div>;
+};
+const TestFixedRangeComponent = ({ mockFn = jest.fn(), isDragging = true }) => {
+  useTouchMove({
+    isDragging,
+    isFixedRange: true,
+    fixedPositions: [0, 50, 100],
+    minLimit: 0,
+    maxLimit: 100,
+    objectRef: { current: document.createElement('div') },
+    parentLeft: 100,
+    stopDragging: jest.fn(),
+    updateKnobPosition: mockFn,
   });
 
   return <div>Test Component</div>;
@@ -34,7 +51,7 @@ describe('GIVEN useTouchMove hook', () => {
   });
 
   describe('WHEN the user moves the touch while dragging', () => {
-    test('THEN it should update object ref position', () => {
+    it('THEN it should update object ref position if no range was provided', () => {
       const parentElementLeft = 100;
       const newPositionX = 120;
       const mockUpdateKnobPosition = jest.fn();
@@ -50,9 +67,41 @@ describe('GIVEN useTouchMove hook', () => {
         newPositionX - parentElementLeft,
       );
     });
+    it('THEN it should not update position if movement is not close to next value', () => {
+      const newPositionX = 120;
+      const firstRangeValue = 0;
+      const mockUpdateKnobPosition = jest.fn();
+
+      const screen = render(
+        <TestFixedRangeComponent mockFn={mockUpdateKnobPosition} />,
+      );
+      const element = screen.getByText('Test Component');
+
+      fireEvent.touchMove(element, {
+        touches: [{ clientX: newPositionX }],
+      });
+
+      expect(mockUpdateKnobPosition).toHaveBeenCalledWith(firstRangeValue);
+    });
+    it('THEN it should update position if movement is close to next value', () => {
+      const closestRangeValue = 50;
+      const newPositionX = 160;
+      const mockUpdateKnobPosition = jest.fn();
+
+      const screen = render(
+        <TestFixedRangeComponent mockFn={mockUpdateKnobPosition} />,
+      );
+      const element = screen.getByText('Test Component');
+
+      fireEvent.touchMove(element, {
+        touches: [{ clientX: newPositionX }],
+      });
+
+      expect(mockUpdateKnobPosition).toHaveBeenCalledWith(closestRangeValue);
+    });
   });
   describe('WHEN the user moves the touch but it is not dragging', () => {
-    test('THEN it should NOT update object ref position', () => {
+    it('THEN it should NOT update object ref position', () => {
       const mockUpdateKnobPosition = jest.fn();
       const newPositionX = 120;
 

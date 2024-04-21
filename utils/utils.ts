@@ -7,6 +7,7 @@ import {
   PercentageFromPositionConfig,
   ValueFromRangeConfig,
   FindClosestValueInRangeConfig,
+  GuardIsNanConfig,
 } from '@/types/common';
 import { MutableRefObject } from 'react';
 
@@ -36,7 +37,7 @@ export const getValueInRangeFromPercentage = ({
   min,
   max,
 }: ValueFromRangeConfig) => {
-  return Math.round((current / 100) * (max - min) + min);
+  return Math.round(((current / 100) * (max - min) + min) * 100) / 100;
 };
 export const getPriceInRangeFromPercentage = ({
   currentPercentage,
@@ -64,7 +65,7 @@ export const getPercentageFromValueRange = ({
   max,
 }: ValueFromRangeConfig) => {
   const range = max - min;
-  return Math.round(((current - min) * 100) / range);
+  return Math.round((((current - min) * 100) / range) * 100) / 100;
 };
 export const getPercentageFromPriceRange = ({
   currentPrice,
@@ -124,4 +125,17 @@ export const findClosestValueinValueRange = ({
   } else {
     return nextClosest;
   }
+};
+
+export const guardIsNan = ({
+  value,
+  defaultValue,
+  shouldRound,
+}: GuardIsNanConfig) => {
+  const _defaultValue = shouldRound ? Math.round(defaultValue) : defaultValue;
+  const _value = shouldRound ? Math.round(Number(value)) : Number(value);
+  if (Number.isNaN(Number(value))) {
+    return _defaultValue || 0;
+  }
+  return Number(_value);
 };

@@ -7,6 +7,8 @@ describe('Given an Input component', () => {
       const expectedValue = 10;
       render(
         <Input
+          isDisabled={false}
+          isLeft={false}
           value={10}
           min={0}
           max={100}
@@ -23,6 +25,8 @@ describe('Given an Input component', () => {
       const expectedValue = 20;
       render(
         <Input
+          isDisabled={false}
+          isLeft={false}
           value={10}
           min={0}
           max={100}
@@ -42,6 +46,8 @@ describe('Given an Input component', () => {
       const mockHandleUpdate = jest.fn();
       render(
         <Input
+          isDisabled={false}
+          isLeft={false}
           value={10}
           min={0}
           max={100}

@@ -63,3 +63,8 @@ export type FindClosestValueInRangeConfig = {
   next: number;
   currentValue: number;
 };
+export type GuardIsNanConfig = {
+  value: string | number;
+  defaultValue: number;
+  shouldRound?: boolean;
+};

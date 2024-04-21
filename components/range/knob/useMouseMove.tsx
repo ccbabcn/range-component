@@ -1,4 +1,4 @@
-import { useMoveProps } from '@/types/range';
+import { useMoveProps } from '@/components/range/types/range';
 import { useEffect } from 'react';
 import { findClosestValueinValueRange, getBoundedValue } from '@/utils/utils';
 
