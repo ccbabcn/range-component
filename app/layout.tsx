@@ -14,6 +14,12 @@ export default function RootLayout({
             <div className="intem flex h-full flex-row gap-x-6 bg-slate-800 p-10 md:flex-col md:px-6 md:py-12">
               <Link
                 className="mb-2 flex h-12 w-full items-center justify-center rounded-md bg-slate-200 p-4 font-bold text-slate-800 hover:bg-slate-300 hover:text-slate-500 md:justify-start"
+                href="/"
+              >
+                Home
+              </Link>
+              <Link
+                className="mb-2 flex h-12 w-full items-center justify-center rounded-md bg-slate-200 p-4 font-bold text-slate-800 hover:bg-slate-300 hover:text-slate-500 md:justify-start"
                 href="/exercise1"
               >
                 Exercise 1
