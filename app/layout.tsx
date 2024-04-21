@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+        <div className="flex h-screen flex-col overflow-y-scroll md:flex-row md:overflow-hidden">
           <div className="w-full flex-none md:w-64">
             <div className="intem flex h-full flex-row gap-x-6 bg-slate-800 p-6 md:flex-col md:px-6 md:py-12">
               <Link
