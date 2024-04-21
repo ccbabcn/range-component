@@ -5,7 +5,7 @@ import { RangeProps } from '@/types/range';
 import { useRef, useState } from 'react';
 import Slider from '@/components/range/slider/slider';
 import Input from '@/components/range/input/input';
-import { getPriceInRangeFromPercentage } from '@/utils/utils';
+import { getPriceInRangeFromPercentage, guardIsNan } from '@/utils/utils';
 
 /**
  * Renders a range component with two inputs and a slider.
@@ -60,23 +60,38 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
     setBoundedRightInputPercentage(inputPercentage);
   };
 
-  const guardIsNaN = (value: string, defaultValue: number) => {
-    if (Number.isNaN(Number(value))) {
-      return defaultValue || 0;
-    }
-    return Number(value);
-  };
+  //Guarded and rounded values
+  const leftInputSecureValue = guardIsNan({
+    value: leftInputValue,
+    defaultValue: priceLimit.minPrice,
+    shouldRound: !isFixedRange,
+  });
+  const rightInputSecureValue = guardIsNan({
+    value: rightInputValue,
+    defaultValue: priceLimit.maxPrice,
+    shouldRound: !isFixedRange,
+  });
+  const leftMaxSecureValue = guardIsNan({
+    value: rightInputValue,
+    defaultValue: priceLimit.maxPrice,
+    shouldRound: !isFixedRange,
+  });
+  const rightMinSecureValue = guardIsNan({
+    value: leftInputValue,
+    defaultValue: priceLimit.minPrice,
+    shouldRound: !isFixedRange,
+  });
 
   return (
     <div className="conatiner flex flex-row items-center justify-center gap-x-2">
       <Input
         isDisabled={isFixedRange}
         isLeft={true}
-        value={guardIsNaN(leftInputValue, priceLimit.minPrice)}
+        value={leftInputSecureValue}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
         minValue={priceLimit.minPrice}
-        maxValue={guardIsNaN(rightInputValue, priceLimit.maxPrice)}
+        maxValue={leftMaxSecureValue}
         onUpdate={handleLeftInputChange}
       />
       <Slider
@@ -93,10 +108,10 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
       <Input
         isDisabled={isFixedRange}
         isLeft={false}
-        value={guardIsNaN(rightInputValue, priceLimit.maxPrice)}
+        value={rightInputSecureValue}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
-        minValue={guardIsNaN(leftInputValue, priceLimit.minPrice)}
+        minValue={rightMinSecureValue}
         maxValue={priceLimit.maxPrice}
         onUpdate={handleRightInputChange}
       />

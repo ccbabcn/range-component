@@ -10,10 +10,15 @@ describe('GIVEN a Knob Component', () => {
       const mockOnChange = jest.fn();
       const { getByTestId } = render(
         <Knob
-          maxLimit={100}
-          minLimit={0}
-          percentValue={50}
+          currentValue={0}
+          fixedPercentages={[]}
+          isFixedRange={false}
           isLeft={true}
+          minLimit={0}
+          maxLimit={100}
+          minValue={0}
+          maxValue={100}
+          percentValue={50}
           onChange={mockOnChange}
         />,
       );
@@ -25,10 +30,15 @@ describe('GIVEN a Knob Component', () => {
       const mockOnChange = jest.fn();
       const { getByTestId, getByLabelText } = render(
         <Knob
-          maxLimit={100}
-          minLimit={0}
-          percentValue={50}
+          currentValue={0}
+          fixedPercentages={[]}
+          isFixedRange={false}
           isLeft={true}
+          minLimit={0}
+          maxLimit={100}
+          minValue={0}
+          maxValue={100}
+          percentValue={50}
           onChange={mockOnChange}
         />,
       );
@@ -45,10 +55,15 @@ describe('GIVEN a Knob Component', () => {
       const mockOnChange = jest.fn();
       const { getByTestId } = render(
         <Knob
-          maxLimit={100}
-          minLimit={0}
-          percentValue={0}
+          currentValue={0}
+          fixedPercentages={[]}
+          isFixedRange={false}
           isLeft={false}
+          minLimit={0}
+          maxLimit={100}
+          minValue={0}
+          maxValue={100}
+          percentValue={50}
           onChange={mockOnChange}
         />,
       );
@@ -67,10 +82,15 @@ describe('GIVEN a Knob Component', () => {
       const { getByTestId } = render(
         <div className="min-w-[200px]">
           <Knob
-            maxLimit={100}
-            minLimit={0}
-            percentValue={50}
+            currentValue={0}
+            fixedPercentages={[]}
+            isFixedRange={false}
             isLeft={false}
+            minLimit={0}
+            maxLimit={100}
+            minValue={0}
+            maxValue={100}
+            percentValue={50}
             onChange={mockOnChange}
           />
         </div>,
