@@ -22,13 +22,13 @@ import { getObjectLimitsWithinParent } from '@/utils/utils';
  * @returns {JSX.Element} The rendered slider component.
  */
 const Slider = ({
-  currentLeftValue,
-  currentRightValue,
   onChange,
   percentageLeftInput,
   percentageRightInput,
   minValue,
   maxValue,
+  refRightValue,
+  refLeftValue,
 }: SliderProps): JSX.Element => {
   const sliderRef: MutableRefObject<HTMLDivElement> = useRef(null);
   const knobSize = 15;
@@ -81,7 +81,7 @@ const Slider = ({
         {sliderRef.current && (
           <div>
             <Knob
-              currentValue={currentLeftValue}
+              currentValue={refLeftValue}
               isLeft={true}
               percentValue={percentageLeftInput}
               minLimit={limits.min}
@@ -91,7 +91,7 @@ const Slider = ({
               onChange={handleOnLeftKnobChange}
             />
             <Knob
-              currentValue={currentRightValue}
+              currentValue={refRightValue}
               isLeft={false}
               percentValue={percentageRightInput}
               minLimit={leftKnobProperties.rigth}

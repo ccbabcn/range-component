@@ -4,7 +4,17 @@ import { render, fireEvent } from '@testing-library/react';
 describe('GIVEN a Slider component ', () => {
   describe('WHEN instantiated', () => {
     it('THEN it should render two knobs and a progress bar', () => {
-      const { getByTestId } = render(<Slider onChange={() => {}} />);
+      const { getByTestId } = render(
+        <Slider
+          percentageLeftInput={0}
+          percentageRightInput={100}
+          maxValue={1}
+          minValue={100}
+          refLeftValue={null}
+          refRightValue={null}
+          onChange={() => {}}
+        />,
+      );
 
       const leftKnob = getByTestId('left-knob');
       const rigthKnob = getByTestId('right-knob');
@@ -19,7 +29,17 @@ describe('GIVEN a Slider component ', () => {
   describe('WHEN it is rendered and the user interacts with a knob', () => {
     it('THEN should update knob position accordingly', () => {
       const mockOnChange = jest.fn();
-      const { getByTestId } = render(<Slider onChange={mockOnChange} />);
+      const { getByTestId } = render(
+        <Slider
+          percentageLeftInput={0}
+          percentageRightInput={100}
+          maxValue={1}
+          minValue={100}
+          refLeftValue={null}
+          refRightValue={null}
+          onChange={mockOnChange}
+        />,
+      );
       const leftKnob = getByTestId('left-knob');
 
       fireEvent.mouseDown(leftKnob);

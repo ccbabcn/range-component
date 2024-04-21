@@ -5,13 +5,13 @@ export type KnobOnChageProperties = {
 };
 
 export type SliderProps = {
-  currentLeftValue: number;
-  currentRightValue: number;
   onChange: (params: LeftAndRightPercentage) => void;
   percentageLeftInput: number;
   percentageRightInput: number;
   minValue: number;
   maxValue: number;
+  refLeftValue: number;
+  refRightValue: number;
 };
 
 export type RangeProps = {
