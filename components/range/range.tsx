@@ -60,37 +60,50 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
     setBoundedRightInputPercentage(inputPercentage);
   };
 
+  const guardIsNaN = (value: string, defaultValue: number) => {
+    if (Number.isNaN(Number(value))) {
+      return defaultValue || 0;
+    }
+    return Number(value);
+  };
+
   return (
     <div className="conatiner flex flex-row items-center justify-center gap-x-2">
       <Input
         isDisabled={isFixedRange}
-        value={Number(leftInputValue)}
+        isLeft={true}
+        value={guardIsNaN(leftInputValue, priceLimit.minPrice)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
         minValue={priceLimit.minPrice}
-        maxValue={Number(rightInputValue)}
+        maxValue={guardIsNaN(rightInputValue, priceLimit.maxPrice)}
         onUpdate={handleLeftInputChange}
       />
       <Slider
+        isFixedRange={isFixedRange}
         onChange={handleSliderChange}
+        minValue={priceLimit.minPrice}
+        maxValue={priceLimit.maxPrice}
         percentageLeftInput={boundedLeftInputPercentage}
         percentageRightInput={boundedRightInputPercentage}
-        maxValue={priceLimit.maxPrice}
-        minValue={priceLimit.minPrice}
         refLeftValue={letInputRef?.current}
         refRightValue={rightInputRef?.current}
+        prices={prices}
       />
       <Input
         isDisabled={isFixedRange}
-        value={Number(rightInputValue)}
+        isLeft={false}
+        value={guardIsNaN(rightInputValue, priceLimit.maxPrice)}
         min={priceLimit.minPrice}
         max={priceLimit.maxPrice}
-        minValue={Number(leftInputValue)}
+        minValue={guardIsNaN(leftInputValue, priceLimit.minPrice)}
         maxValue={priceLimit.maxPrice}
         onUpdate={handleRightInputChange}
       />
     </div>
   );
 };
+
+Range.displayName = 'Range';
 
 export default Range;

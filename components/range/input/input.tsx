@@ -18,6 +18,7 @@ import { InputProps } from '@/types/range';
  */
 const Input = ({
   isDisabled,
+  isLeft,
   value,
   min,
   max,
@@ -70,16 +71,17 @@ const Input = ({
 
   return (
     <input
-      disabled={isDisabled}
+      id={`${isLeft ? 'left' : 'right'}-input`}
       className={`w-20 rounded-full ${!isDisabled && 'border border-slate-200'} bg-transparent text-center`}
-      type="number"
-      id="left-input"
-      name="left-input"
+      data-testid={`${isLeft ? 'left' : 'right'}-input`}
+      disabled={isDisabled}
       min={min}
       max={max}
-      placeholder={String(value)}
-      value={inputValue}
+      name={`${isLeft ? 'left' : 'right'}-input`}
       onChange={handleInputChange}
+      placeholder={String(value)}
+      type="number"
+      value={inputValue}
     />
   );
 };

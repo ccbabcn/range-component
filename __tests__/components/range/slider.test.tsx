@@ -6,13 +6,15 @@ describe('GIVEN a Slider component ', () => {
     it('THEN it should render two knobs and a progress bar', () => {
       const { getByTestId } = render(
         <Slider
+          isFixedRange={false}
+          minValue={100}
+          maxValue={1}
+          onChange={() => {}}
           percentageLeftInput={0}
           percentageRightInput={100}
-          maxValue={1}
-          minValue={100}
+          prices={[]}
           refLeftValue={null}
           refRightValue={null}
-          onChange={() => {}}
         />,
       );
 
@@ -31,13 +33,15 @@ describe('GIVEN a Slider component ', () => {
       const mockOnChange = jest.fn();
       const { getByTestId } = render(
         <Slider
+          isFixedRange={false}
+          minValue={100}
+          maxValue={1}
+          onChange={mockOnChange}
           percentageLeftInput={0}
           percentageRightInput={100}
-          maxValue={1}
-          minValue={100}
+          prices={[]}
           refLeftValue={null}
           refRightValue={null}
-          onChange={mockOnChange}
         />,
       );
       const leftKnob = getByTestId('left-knob');

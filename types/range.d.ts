@@ -53,6 +53,7 @@ export type InputOnUpdateProps = {
 
 export type InputProps = {
   isDisabled: boolean;
+  isLeft: boolean;
   value: number;
   min: number;
   max: number;
