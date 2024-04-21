@@ -13,8 +13,8 @@ describe('GIVEN a Slider component ', () => {
           percentageLeftInput={0}
           percentageRightInput={100}
           prices={[]}
-          refLeftValue={null}
-          refRightValue={null}
+          refLeftValue={0}
+          refRightValue={0}
         />,
       );
 
@@ -40,8 +40,8 @@ describe('GIVEN a Slider component ', () => {
           percentageLeftInput={0}
           percentageRightInput={100}
           prices={[]}
-          refLeftValue={null}
-          refRightValue={null}
+          refLeftValue={0}
+          refRightValue={0}
         />,
       );
       const leftKnob = getByTestId('left-knob');

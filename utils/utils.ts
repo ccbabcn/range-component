@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import {
   Limits,
   PriceFromPercentageConfig,
@@ -9,7 +10,6 @@ import {
   FindClosestValueInRangeConfig,
   GuardIsNanConfig,
 } from '@/types/common';
-import { MutableRefObject } from 'react';
 
 export const getBoundedValue = ({
   value,
@@ -19,11 +19,11 @@ export const getBoundedValue = ({
   return Math.min(Math.max(minLimit, value), maxLimit);
 };
 export const getObjectLimitsWithinParent = (
-  parentRef: MutableRefObject<HTMLDivElement>,
+  parentRef: MutableRefObject<HTMLDivElement | null>,
   objectSize: number,
 ): Limits => {
-  const parentOffset = parentRef.current.offsetLeft;
-  const parentWidth = parentRef.current.clientWidth;
+  const parentOffset = parentRef?.current?.offsetLeft || 0;
+  const parentWidth = parentRef?.current?.clientWidth || 0;
   const minLimit = parentOffset + objectSize / 2;
   const maxLimit = parentOffset + parentWidth - objectSize / 2;
   return {

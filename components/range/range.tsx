@@ -1,11 +1,14 @@
 'use client';
 
-import { PriceLimit } from '@/types/common';
-import { RangeProps } from '@/components/range/types/range';
 import { useRef, useState } from 'react';
-import Slider from '@/components/range/slider/slider';
 import Input from '@/components/range/input/input';
+import Slider from '@/components/range/slider/slider';
 import { getPriceInRangeFromPercentage, guardIsNan } from '@/utils/utils';
+import {
+  RangeProps,
+  onInputUpdateConfig,
+} from '@/components/range/types/range';
+import { LeftAndRightPercentage, PriceLimit } from '@/types/common';
 
 /**
  * Renders a range component with two inputs and a slider.
@@ -34,7 +37,10 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
   const [boundedRightInputPercentage, setBoundedRightInputPercentage] =
     useState(100);
 
-  const handleSliderChange = ({ leftPercentage, rightPercentage }) => {
+  const handleSliderChange = ({
+    leftPercentage,
+    rightPercentage,
+  }: LeftAndRightPercentage) => {
     const leftValue = getPriceInRangeFromPercentage({
       currentPercentage: leftPercentage,
       minPrice: priceLimit.minPrice,
@@ -50,12 +56,18 @@ const Range = ({ prices }: RangeProps): JSX.Element => {
     setRightInputValue(String(rightValue));
   };
 
-  const handleLeftInputChange = ({ refValue, inputPercentage }) => {
+  const handleLeftInputChange = ({
+    refValue,
+    inputPercentage,
+  }: onInputUpdateConfig) => {
     letInputRef.current = refValue;
     setBoundedLeftInputPercentage(inputPercentage);
   };
 
-  const handleRightInputChange = ({ refValue, inputPercentage }) => {
+  const handleRightInputChange = ({
+    refValue,
+    inputPercentage,
+  }: onInputUpdateConfig) => {
     rightInputRef.current = refValue;
     setBoundedRightInputPercentage(inputPercentage);
   };

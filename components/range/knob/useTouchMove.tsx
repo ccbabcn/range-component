@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { useMoveProps } from '@/components/range/types/range';
 import { findClosestValueinValueRange, getBoundedValue } from '@/utils/utils';
-import { useEffect } from 'react';
 
 const useTouchMove = ({
   isDragging,
