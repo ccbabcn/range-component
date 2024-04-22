@@ -35,28 +35,13 @@ const Knob = ({
   const [isDragging, setIsDragging] = useState(false);
   const [percentage, setPercent] = useState(0);
   const [knobLeft, setKnobLeft] = useState(0);
+  const [fixedPositions, setFixedPositions] = useState<number[]>([]);
   const knobRef = useRef<HTMLDivElement>(null);
   const knobParent = knobRef.current?.parentElement;
   const parentLeft = knobParent?.getBoundingClientRect().left || 0;
   const parentWidth = knobParent?.clientWidth || 0;
   const knobSize = 15;
   const knobHalfSize = knobSize / 2;
-  const [fixedPositions, setFixedPositions] = useState<number[]>([]);
-
-  useEffect(() => {
-    if (parentWidth) {
-      const fixedPositions = fixedPercentages.map((percentage) => {
-        return getKnobPositionFromPercentage({
-          isLeft,
-          knobSize,
-          knobHalfSize,
-          parentWidth,
-          percentValue: percentage,
-        });
-      });
-      setFixedPositions(fixedPositions);
-    }
-  }, [parentWidth]);
 
   const updateKnobPosition = (newPosition: number) => {
     if (knobRef?.current?.style?.left) {
@@ -98,8 +83,23 @@ const Knob = ({
     stopDragging,
     updateKnobPosition,
   });
+  // Once parent is ready, calculate fixed positions if needed
   useEffect(() => {
-    // Handle knob position from percent change
+    if (parentWidth) {
+      const fixedPositions = fixedPercentages.map((percentage) => {
+        return getKnobPositionFromPercentage({
+          isLeft,
+          knobSize,
+          knobHalfSize,
+          parentWidth,
+          percentValue: percentage,
+        });
+      });
+      setFixedPositions(fixedPositions);
+    }
+  }, [parentWidth]);
+  // Handle knob position from percent change
+  useEffect(() => {
     if (parentWidth) {
       const knobNewPosition = getKnobPositionFromPercentage({
         isLeft,
@@ -111,8 +111,8 @@ const Knob = ({
       updateKnobPosition(knobNewPosition);
     }
   }, [parentWidth, percentValue]);
+  // Set percent from movement after bouncing
   useEffect(() => {
-    // Set percent from movement after bouncing
     let percent = 0;
     let boundedKnobPosition = 0;
 
@@ -128,7 +128,6 @@ const Knob = ({
         maxPosition: parentWidth - knobSize,
       });
     }
-
     if (!isLeft) {
       boundedKnobPosition = getBoundedValue({
         value: knobLeft,
@@ -141,12 +140,10 @@ const Knob = ({
         maxPosition: parentWidth - knobHalfSize,
       });
     }
-
     setPercent(percent);
   }, [knobLeft]);
-
+  // Pass knob properties to parent on percent or left change
   useEffect(() => {
-    // Pass knob properties to parent on percent change
     const knobProperties = {
       left: knobLeft,
       rigth: knobLeft + knobSize,
