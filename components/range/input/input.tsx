@@ -26,23 +26,22 @@ const Input = ({
   maxValue,
   onUpdate,
 }: InputProps) => {
+  const [boundedPercentage, setBoundedPercentage] = useState(0);
   const [inputValue, setInputValue] = useState(String(value));
   const inputRef = useRef(Number(inputValue));
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(String(e.target.value));
-  };
 
-  const [boundedPercentage, setBoundedPercentage] = useState(0);
   const debouncedInputValue = useDebouncedValue({
     value: inputValue,
     delay: 700,
   });
-
   const onBoundedUpdate = () => {
     onUpdate({
       refValue: inputRef?.current,
       inputPercentage: boundedPercentage,
     });
+  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(String(e.target.value));
   };
 
   useEffect(() => {
